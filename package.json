@@ -3,17 +3,19 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "libs/*"
+    "libs/*",
+    "mocks/*"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run mock-api\" \"npm run dev:web\"",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
     "dev:web": "npm run dev --workspace=apps/web",
-    "mock-api": "node mocks/api/server.js",
+    "dev:api": "node mocks/api/server.js",
     "build": "npm run build --workspace=apps/web",
     "preview": "npm run preview --workspace=apps/web"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "json-server": "^0.17.4",
     "typescript": "^5.2.2"
   }
 }
