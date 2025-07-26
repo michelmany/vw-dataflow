@@ -1,0 +1,19 @@
+{
+  "name": "vw-dataflow",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run mock-api\" \"npm run dev:web\"",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "mock-api": "node mocks/api/server.js",
+    "build": "npm run build --workspace=apps/web",
+    "preview": "npm run preview --workspace=apps/web"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.2.2"
+  }
+}

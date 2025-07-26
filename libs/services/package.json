@@ -1,0 +1,11 @@
+{
+  "name": "@libs/services",
+  "version": "0.0.0",
+  "main": "src/index.ts",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
