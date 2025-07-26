@@ -3,11 +3,25 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
+    "emitDeclarationOnly": true,
     "declarationMap": true,
     "outDir": "dist",
-    "noEmit": false
+    "rootDir": "src",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "isolatedModules": true
   },
   "include": [
     "src"
+  ],
+  "references": [
+    {
+      "path": "../../libs/types"
+    },
+    {
+      "path": "../../libs/utils"
+    }
   ]
 }

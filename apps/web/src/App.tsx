@@ -1,5 +1,6 @@
 import {Routes, Route} from 'react-router-dom'
-import HomePage from './pages/Homepage'
+import {UserListPage} from './pages/users/List'
+import {UserDetailPage} from './pages/users/Detail'
 
 function App() {
     return (
@@ -15,7 +16,8 @@ function App() {
             </nav>
 
             <Routes>
-                <Route path="/" element={<HomePage/>}/>
+                <Route path="/" element={<UserListPage/>}/>
+                <Route path="/user/:id" element={<UserDetailPage/>}/>
             </Routes>
         </div>
     )
