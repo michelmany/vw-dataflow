@@ -59,6 +59,20 @@ Types used:
 - `refactor`, `test`, `docs`, etc.
 ---
 
+## AI Tool Usage Documentation
+
+This project uses AI-assisted tools as part of the development process.
+
+### Tools Involved
+- **GitHub Copilot**: Used for autocomplete suggestions and boilerplate generation.
+- **ChatGPT**: Used for architecture validation, code scaffolding, and problem-solving discussions.
+
+### Integration with Human Input
+All suggestions were reviewed, refactored, or rewritten to match project goals and architectural decisions. More detailed documentation on AI usage — including examples, customizations, and trade-offs — will be added at the end of the project.
+
+> 📝 Full AI usage documentation will be completed before the final delivery.
+
+
 ## License
 
 This project is for evaluation purposes only.
