@@ -14,7 +14,6 @@ export const userTableColumns: ColumnDef<User>[] = [
       String(row.getValue(columnId))
         .toLowerCase()
         .includes(filterValue.toLowerCase()),
-    size: 200,
   },
   {
     accessorKey: 'email',
