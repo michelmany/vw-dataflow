@@ -11,14 +11,26 @@ This project follows a **monorepo-style micro frontend architecture**, separatin
 ```
 project-root/
 ├── apps/
-│   └── web/                → Main frontend application
-│       ├── src/            → App-specific logic, pages, and composition
+│   └── web/               # Main frontend application
+│       ├── src/
+│       │   ├── pages/     # Route pages (e.g. /users, /users/:id)
+│       │   ├── components/# Local layout or feature components
+│       │   ├── App.tsx
+│       │   ├── main.tsx
+│       │   └── index.css
+│       ├── index.html
+│       ├── package.json
+│       └── tsconfig.json
 ├── libs/
-│   ├── ui/                 → Reusable, framework-agnostic UI components
-│   ├── hooks/              → Shared logic (custom hooks)
-│   ├── utils/              → Utility functions
-│   └── services/           → API and data-related logic
-├── mocks/                  → JSON Server mock API
+│   ├── ui/                # Reusable UI components (Button, DataTable, etc)
+│   ├── hooks/             # Shared hooks and Jotai atoms
+│   ├── utils/             # Shared utilities (e.g. cn, tailwind helpers)
+│   ├── services/          # API communication (fetch, axios)
+│   └── types/             # Shared TypeScript interfaces (e.g. User)
+├── mocks/                 # JSON Server mock API setup
+│   └── api/
+│       ├── db.json
+│       └── generate.js
 └── package.json            → Root workspace manager
 ```
 ---
@@ -31,6 +43,7 @@ project-root/
 - **shadcn/ui** for accessible and themeable components (wrapped inside `libs/ui`)
 - **SCSS Modules** (optional for future custom styles)
 - **JSON Server** for mocking RESTful API endpoints
+- **Jotai** for global state management
 
 ---
 
@@ -40,6 +53,18 @@ project-root/
 - Clean dependency boundaries between `apps` and `libs`
 - UI components are wrapped and exported from `libs/ui`
 - App-specific composition and page layouts live only inside `apps/web`
+- Custom hooks and utilities are colocated in `libs/hooks` and `libs/utils`
+- Services for API calls and data management are in `libs/services`
+
+---
+
+## State Management
+
+This project uses **Jotai** for global state management.
+
+Jotai provides an atomic, minimalistic approach to handling global state in React apps. It integrates well with the current Micro Framework Architecture by allowing the state logic to be colocated and composed in a modular way. 
+
+> A detailed explanation of the decision, usage, and custom atoms will be added after implementation is complete.
 
 ---
 

@@ -1,0 +1,30 @@
+import { useUsers } from '@libs/hooks';
+import { Button, Container, UserDataTable } from '@libs/ui';
+import { useNavigate } from 'react-router-dom';
+
+export function UserListPage() {
+  const { users } = useUsers();
+  const navigate = useNavigate();
+
+  return (
+    <Container>
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8">
+          Welcome to VW Dataflow
+        </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold">Users</h1>
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => navigate('/users/create')}
+          >
+            Add User
+          </Button>
+        </div>
+
+        <UserDataTable data={users} />
+      </div>
+    </Container>
+  );
+}

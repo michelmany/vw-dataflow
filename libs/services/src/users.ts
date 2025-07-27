@@ -1,24 +1,80 @@
-import {User} from "@libs/types";
+import { User } from '@libs/types';
+
+const BASE_URL = 'http://localhost:3001/api/users';
 
 /**
- * Fetches a list of users.
- *
- * @return {Promise<Array>} A promise that resolves to an array of users.
- * @throws {Error} If the request fails.
- * @param id
+ * Handles the response from a fetch call, throwing an error if the request failed.
+ * @param response - The fetch Response object
+ * @returns The parsed JSON data
+ * @throws Error if response is not OK
  */
-export async function getUserById(id: string): Promise<User> {
-    const response = await fetch(`http://localhost:3001/api/users/${id}`);
-    if (!response.ok) {
-        throw new Error("User not found");
-    }
-    return response.json();
+async function handleResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || 'API request failed');
+  }
+  return response.json();
 }
 
+/**
+ * Fetch all users from the API.
+ * @returns Promise resolving to an array of User objects
+ */
 export async function getUsers(): Promise<User[]> {
-    const response = await fetch(`http://localhost:3001/api/users`);
-    if (!response.ok) {
-        throw new Error("Failed to fetch users");
-    }
-    return response.json();
+  const response = await fetch(BASE_URL);
+  return handleResponse<User[]>(response);
+}
+
+/**
+ * Fetch a single user by ID.
+ * @param id - The user's ID
+ * @returns Promise resolving to the User object
+ */
+export async function getUserById(id: string): Promise<User> {
+  const response = await fetch(`${BASE_URL}/${id}`);
+  return handleResponse<User>(response);
+}
+
+/**
+ * Create a new user.
+ * @param user - Partial User data (without ID)
+ * @returns Promise resolving to the newly created User
+ */
+export async function createUser(user: Partial<User>): Promise<User> {
+  const response = await fetch(BASE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user),
+  });
+  return handleResponse<User>(response);
+}
+
+/**
+ * Update an existing user by ID.
+ * @param id - The user's ID
+ * @param updates - Partial User data to update
+ * @returns Promise resolving to the updated User
+ */
+export async function updateUser(
+  id: string,
+  updates: Partial<User>
+): Promise<User> {
+  const response = await fetch(`${BASE_URL}/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  return handleResponse<User>(response);
+}
+
+/**
+ * Delete a user by ID.
+ * @param id - The user's ID
+ * @returns Promise resolving to the deleted User
+ */
+export async function deleteUser(id: string): Promise<User> {
+  const response = await fetch(`${BASE_URL}/${id}`, {
+    method: 'DELETE',
+  });
+  return handleResponse<User>(response);
 }
