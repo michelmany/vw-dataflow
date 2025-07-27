@@ -33,19 +33,18 @@ export function UserDataTable({ data }: UserDataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
 
-  const globalFilterFn = (
+  function globalFilterFn(
     row: Row<User>,
     _columnId: string,
     filterValue: string
-  ) => {
-    const name = row.getValue('name') as string;
-    const email = row.getValue('email') as string;
+  ) {
+    const search = filterValue.toLowerCase();
 
-    return (
-      name?.toLowerCase().includes(filterValue.toLowerCase()) ||
-      email?.toLowerCase().includes(filterValue.toLowerCase())
-    );
-  };
+    return ['name', 'email', 'role', 'team', 'status'].some(key => {
+      const value = row.getValue(key);
+      return typeof value === 'string' && value.toLowerCase().includes(search);
+    });
+  }
 
   const table = useReactTable({
     data,

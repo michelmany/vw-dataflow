@@ -26,7 +26,7 @@ export function UserDataTableToolbar<TData>({
       <div className="flex flex-1 items-center gap-2">
         <Input
           id="search"
-          placeholder="Search name or email..."
+          placeholder="Search users..."
           value={table.getState().globalFilter ?? ''}
           onChange={event => table.setGlobalFilter(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
