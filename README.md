@@ -33,6 +33,7 @@ project-root/
 │       └── generate.js
 └── package.json            → Root workspace manager
 ```
+
 ---
 
 ## Tech Stack
@@ -62,15 +63,20 @@ project-root/
 
 This project uses **Jotai** for global state management.
 
-Jotai provides an atomic, minimalistic approach to handling global state in React apps. It integrates well with the current Micro Framework Architecture by allowing the state logic to be colocated and composed in a modular way. 
+Jotai provides an atomic, minimalistic approach to handling global state in React apps. It integrates well with the current Micro Framework Architecture by allowing the state logic to be colocated and composed in a modular way.
 
-> A detailed explanation of the decision, usage, and custom atoms will be added after implementation is complete.
+- `usersAtom` stores the list of users
+- `useUsers()` hook wraps read/write logic and async effects
+- All user-related state and operations are kept modular and colocated with domain services
+- The root app is wrapped with Jotai's `<Provider>`
+
+This setup ensures clean separation of state logic and component presentation while allowing local overrides or expansions if needed.
 
 ---
 
 ## Commit Convention
 
-This repo follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. 
+This repo follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 Example:
 
 ```
@@ -78,10 +84,12 @@ chore: scaffold project structure with micro framework architecture
 ```
 
 Types used:
+
 - `feat`: new features
 - `fix`: bug fixes
 - `chore`: tooling, configs, setup
 - `refactor`, `test`, `docs`, etc.
+
 ---
 
 ## AI Tool Usage Documentation
@@ -89,14 +97,15 @@ Types used:
 This project uses AI-assisted tools as part of the development process.
 
 ### Tools Involved
+
 - **GitHub Copilot**: Used for autocomplete suggestions and boilerplate generation.
 - **ChatGPT**: Used for architecture validation, code scaffolding, and problem-solving discussions.
 
 ### Integration with Human Input
+
 All suggestions were reviewed, refactored, or rewritten to match project goals and architectural decisions. More detailed documentation on AI usage — including examples, customizations, and trade-offs — will be added at the end of the project.
 
 > 📝 Full AI usage documentation will be completed before the final delivery.
-
 
 ## License
 

@@ -1,6 +1,7 @@
 import { useUsers } from '@libs/hooks';
-import { Button, Container, UserDataTable } from '@libs/ui';
+import { Button, Container } from '@libs/ui';
 import { useNavigate } from 'react-router-dom';
+import { UserDataTable } from '../../features/users/components/UserDataTable';
 
 export function UserListPage() {
   const { users } = useUsers();
