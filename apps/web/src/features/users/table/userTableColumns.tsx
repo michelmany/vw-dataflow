@@ -10,6 +10,10 @@ export const userTableColumns: ColumnDef<User>[] = [
     ),
     enableSorting: true,
     cell: ({ row }) => <div className="capitalize">{row.getValue('name')}</div>,
+    filterFn: (row, columnId, filterValue) =>
+      String(row.getValue(columnId))
+        .toLowerCase()
+        .includes(filterValue.toLowerCase()),
   },
   {
     accessorKey: 'email',
@@ -17,7 +21,10 @@ export const userTableColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Email" />
     ),
     enableSorting: true,
-    enableMultiSort: false,
+    filterFn: (row, columnId, filterValue) =>
+      String(row.getValue(columnId))
+        .toLowerCase()
+        .includes(filterValue.toLowerCase()),
   },
   {
     accessorKey: 'role',
@@ -25,7 +32,6 @@ export const userTableColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Role" />
     ),
     enableSorting: true,
-    enableMultiSort: false,
   },
   {
     accessorKey: 'team',
@@ -33,7 +39,6 @@ export const userTableColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Team" />
     ),
     enableSorting: true,
-    enableMultiSort: false,
   },
   {
     accessorKey: 'status',
@@ -41,6 +46,7 @@ export const userTableColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     enableSorting: true,
-    enableMultiSort: false,
+    enableColumnFilter: true,
+    filterFn: 'equals',
   },
 ];

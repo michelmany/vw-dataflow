@@ -7,39 +7,13 @@ import {
   TableRow,
 } from './Table';
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from '@tanstack/react-table';
+import { flexRender, Table as TableType } from '@tanstack/react-table';
 
-import { useState } from 'react';
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableProps<TData> {
+  table: TableType<TData>;
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-  });
-
+export function DataTable<TData>({ table }: DataTableProps<TData>) {
   return (
     <div className="rounded-md border">
       <Table>
@@ -75,9 +49,7 @@ export function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="text-left">
-                No results.
-              </TableCell>
+              <TableCell className="text-left">No results.</TableCell>
             </TableRow>
           )}
         </TableBody>
