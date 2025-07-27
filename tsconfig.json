@@ -3,11 +3,8 @@
     "target": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true,
-    "declaration": true,
+
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -15,6 +12,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    "types": ["react", "node"], // ✅ Add this
+    "typeRoots": ["./node_modules/@types"],
+
     "baseUrl": ".",
     "paths": {
       "@libs/ui": ["libs/ui/src"],
@@ -23,5 +24,13 @@
       "@libs/services": ["libs/services/src"],
       "@libs/types": ["libs/types/src"]
     }
-  }
+  },
+  "references": [
+    { "path": "./libs/ui" },
+    { "path": "./libs/hooks" },
+    { "path": "./libs/utils" },
+    { "path": "./libs/services" },
+    { "path": "./libs/types" },
+    { "path": "./apps/web" }
+  ]
 }

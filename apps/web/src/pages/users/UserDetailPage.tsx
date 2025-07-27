@@ -1,31 +1,31 @@
-import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {getUserById} from "@libs/services";
-import {User} from "@libs/types";
-import {UserShowcase} from "@libs/ui";
+import { getUserById } from '@libs/services';
+import { User } from '@libs/types';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { UserShowcase } from '../../features/users/components/UserShowcase';
 
 export function UserDetailPage() {
-    const {id} = useParams();
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (!id) return;
-        getUserById(id)
-            .then((data: User) => {
-                setUser(data);
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
-    }, [id]);
+  useEffect(() => {
+    if (!id) return;
+    getUserById(id)
+      .then((data: User) => {
+        setUser(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [id]);
 
-    if (loading) return <p>Loading...</p>;
-    if (!user) return <p>User not found.</p>;
+  if (loading) return <p>Loading...</p>;
+  if (!user) return <p>User not found.</p>;
 
-    return (
-        <section className="max-w-2xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4">User Details</h1>
-            <UserShowcase user={user}/>
-        </section>
-    );
+  return (
+    <section className="max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">User Details</h1>
+      <UserShowcase user={user} />
+    </section>
+  );
 }

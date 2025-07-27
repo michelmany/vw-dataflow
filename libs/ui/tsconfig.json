@@ -7,11 +7,16 @@
     "declarationMap": true,
     "outDir": "dist",
     "rootDir": "src",
+
+    // Fixes for React + JSX + compatibility
+    "jsx": "react-jsx",
     "skipLibCheck": true,
     "isolatedModules": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "target": "ESNext"
+    "target": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src"],
   "references": [
