@@ -7,13 +7,12 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@libs/*": [
-        "../../libs/*/src"
-      ]
+      "@libs/*": ["../../libs/*/src"]
     }
   },
   "include": [
-    "src"
+    "src",
+    "../../libs/ui/src/components/table/DataTableColumnHeader.tsx"
   ],
   "references": [
     {
