@@ -1,5 +1,5 @@
 import { User } from '@libs/types';
-import { DataTable } from '@libs/ui';
+import { DataTable, DataTablePagination } from '@libs/ui';
 import {
   ColumnFiltersState,
   Row,
@@ -60,7 +60,7 @@ export function UserDataTable({ data }: UserDataTableProps) {
     onGlobalFilterChange: setGlobalFilter,
     initialState: {
       pagination: {
-        pageSize: 25,
+        pageSize: 12,
       },
     },
     enableRowSelection: true,
@@ -81,6 +81,7 @@ export function UserDataTable({ data }: UserDataTableProps) {
     <div className="flex flex-col gap-4">
       <UserDataTableToolbar table={table} />
       <DataTable table={table} />
+      <DataTablePagination table={table} />
     </div>
   );
 }
