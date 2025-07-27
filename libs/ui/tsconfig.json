@@ -7,15 +7,13 @@
     "declarationMap": true,
     "outDir": "dist",
     "rootDir": "src",
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "target": "ESNext",
-    "skipLibCheck": true,
-    "isolatedModules": true
+    "target": "ESNext"
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "references": [
     {
       "path": "../../libs/types"
