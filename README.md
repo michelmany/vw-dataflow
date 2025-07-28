@@ -186,6 +186,18 @@ In addition, if time permits, I plan to extend **JSON Server** to handle **serve
 
 This **dual approach** demonstrates awareness of scalability trade-offs and the ability to adapt the solution to different contexts.
 
+## Accessibility
+
+This project follows WCAG 2.1 AA best practices:
+
+- **Semantic HTML**: Proper headings, landmarks (`<main>`, `<nav>`), and form labels.
+- **ARIA support**: Dialogs with `role="dialog"`, descriptive labels, and focus management.
+- **Keyboard navigation**: Full support with focus trapping and visible indicators.
+- **Screen reader friendly**: Accessible names for buttons/inputs, hidden text for icons.
+- **Forms**: Required fields, error states, and helper text linked with ARIA.
+
+Tested with keyboard-only navigation, screen readers, and automated tools (axe/Lighthouse).
+
 ## Commit Convention
 
 This repo follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.

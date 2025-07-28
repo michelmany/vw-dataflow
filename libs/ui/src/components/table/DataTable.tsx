@@ -15,8 +15,17 @@ interface DataTableProps<TData> {
 
 export function DataTable<TData>({ table }: DataTableProps<TData>) {
   return (
-    <div className="rounded-md border bg-white shadow-sm">
-      <Table>
+    <div
+      className="rounded-md border bg-white shadow-sm"
+      role="region"
+      aria-label="Data table"
+      data-prevent-focus="true"
+    >
+      <Table
+        role="table"
+        aria-label="Users data table"
+        data-prevent-focus="true"
+      >
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
@@ -49,7 +58,14 @@ export function DataTable<TData>({ table }: DataTableProps<TData>) {
             ))
           ) : (
             <TableRow>
-              <TableCell className="text-left">No results.</TableCell>
+              <TableCell
+                colSpan={table.getAllColumns().length}
+                className="text-left"
+                role="cell"
+                aria-live="polite"
+              >
+                No results found.
+              </TableCell>
             </TableRow>
           )}
         </TableBody>

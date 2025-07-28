@@ -45,31 +45,35 @@ function UserListPage() {
 
   return (
     <Container>
-      <h1 className="text-4xl text-center font-bold text-gray-900 mb-8">
-        Welcome to VW Dataflow
-      </h1>
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2xl font-semibold">Users</h1>
-      </div>
+      <header className="mb-8">
+        <h1 className="text-4xl text-center font-bold text-gray-900 mb-8">
+          Welcome to VW Dataflow
+        </h1>
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-2xl font-semibold">Users</h2>
+        </div>
+      </header>
 
-      <UserDataTable
-        data={users}
-        onDeleteUser={openDeleteDialog}
-        onEditUser={openEditDrawer}
-        onAddUser={openAddDrawer}
-        deleteDialogOpen={deleteDialogOpen}
-        userToDelete={userToDelete}
-        onDeleteDialogClose={closeDeleteDialog}
-        onConfirmDelete={handleConfirmDelete}
-        drawerOpen={drawerOpen}
-        userToEdit={userToEdit || undefined}
-        onDrawerClose={closeDrawer}
-        onUserSubmit={handleUserSubmit}
-        showcaseOpen={showcaseOpen}
-        userToShowcase={userToShowcase}
-        onShowcaseClose={closeShowcase}
-        onViewUserDetails={openShowcase}
-      />
+      <section aria-label="User management interface">
+        <UserDataTable
+          data={users}
+          onDeleteUser={openDeleteDialog}
+          onEditUser={openEditDrawer}
+          onAddUser={openAddDrawer}
+          deleteDialogOpen={deleteDialogOpen}
+          userToDelete={userToDelete}
+          onDeleteDialogClose={closeDeleteDialog}
+          onConfirmDelete={handleConfirmDelete}
+          drawerOpen={drawerOpen}
+          userToEdit={userToEdit || undefined}
+          onDrawerClose={closeDrawer}
+          onUserSubmit={handleUserSubmit}
+          showcaseOpen={showcaseOpen}
+          userToShowcase={userToShowcase}
+          onShowcaseClose={closeShowcase}
+          onViewUserDetails={openShowcase}
+        />
+      </section>
     </Container>
   );
 }

@@ -122,9 +122,18 @@ export const UserDataTable = memo(function UserDataTable({
 
   return (
     <div className="flex flex-col gap-4">
-      <UserDataTableToolbar table={table} onAddUserClick={onAddUser} />
-      <DataTable table={table} />
-      <DataTablePagination table={table} />
+      <section aria-label="User table controls">
+        <UserDataTableToolbar table={table} onAddUserClick={onAddUser} />
+      </section>
+
+      <section aria-label="User data table">
+        <DataTable table={table} />
+      </section>
+
+      <section aria-label="Table pagination">
+        <DataTablePagination table={table} />
+      </section>
+
       <UserDeleteDialog
         open={deleteDialogOpen}
         onOpenChange={onDeleteDialogClose}

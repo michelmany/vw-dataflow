@@ -27,15 +27,16 @@ export const userTableColumns = (
       const user = row.original;
       return (
         <button
-          className="capitalize text-primary hover:text-primary/80 hover:underline focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm"
+          className="capitalize text-primary hover:text-primary/80 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           onClick={() => onViewDetails?.(user)}
           tabIndex={0}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               onViewDetails?.(user);
             }
           }}
+          aria-label={`View details for ${row.getValue('name')}`}
         >
           {row.getValue('name')}
         </button>
@@ -96,19 +97,28 @@ export const userTableColumns = (
               className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
               size="icon"
               onClick={e => e.stopPropagation()}
+              aria-label={`Open actions menu for ${user.name}`}
             >
-              <MoreVertical className="h-4 w-4" />
+              <MoreVertical className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">Open menu</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-32">
-            <DropdownMenuItem onClick={() => onEdit?.(user)}>
+          <DropdownMenuContent
+            align="end"
+            className="w-32"
+            aria-label={`Actions for ${user.name}`}
+          >
+            <DropdownMenuItem
+              onClick={() => onEdit?.(user)}
+              aria-label={`Edit ${user.name}`}
+            >
               Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               variant="destructive"
               onClick={() => onDelete(user)}
+              aria-label={`Delete ${user.name}`}
             >
               Delete
             </DropdownMenuItem>

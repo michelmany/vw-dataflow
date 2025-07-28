@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Screen reader only styles */
+@layer utilities {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 47.4% 11.2%;
@@ -90,10 +116,116 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-:focus {
+/* Enhanced focus styles - Simple and effective approach */
+*:focus {
   outline: none;
 }
-:focus-visible {
+
+*:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
+}
+
+/* Specific elements that should never show focus outlines */
+table,
+tbody,
+thead,
+tr,
+td,
+th,
+nav,
+header,
+main,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div[role='region'],
+section,
+[role='dialog'],
+[role='banner'],
+[role='navigation'],
+[role='main'],
+[data-prevent-focus] {
+  outline: none !important;
+}
+
+table:focus,
+tbody:focus,
+thead:focus,
+tr:focus,
+td:focus,
+th:focus,
+nav:focus,
+nav *:focus,
+header:focus,
+header *:focus,
+main:focus,
+div:focus,
+span:focus,
+h1:focus,
+h2:focus,
+h3:focus,
+h4:focus,
+h5:focus,
+h6:focus,
+p:focus,
+div[role='region']:focus,
+section:focus,
+[role='dialog']:focus,
+[role='banner']:focus,
+[role='navigation']:focus,
+[role='main']:focus,
+[data-prevent-focus]:focus,
+[data-prevent-focus] *:focus {
+  outline: none !important;
+}
+
+/* Ensure interactive elements only show focus when navigated via keyboard */
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Force remove outlines from common problematic elements */
+.rounded-md:focus,
+.border:focus,
+.bg-white:focus,
+.shadow-sm:focus,
+.flex:focus,
+.items-center:focus,
+.justify-between:focus,
+.max-w-7xl:focus,
+.mx-auto:focus,
+.px-4:focus,
+.sm\\:px-6:focus,
+.lg\\:px-8:focus {
+  outline: none !important;
+}
+
+/* Skip navigation link */
+.skip-nav {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 9999;
+  border: 2px solid hsl(var(--ring));
+  border-radius: 4px;
+}
+
+.skip-nav:focus {
+  top: 10px;
 }

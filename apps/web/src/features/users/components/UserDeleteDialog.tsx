@@ -23,20 +23,28 @@ export function UserDeleteDialog({
 }: UserDeleteDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent aria-describedby="delete-dialog-description">
         <DialogHeader className="mb-5">
           <DialogTitle>Delete User</DialogTitle>
         </DialogHeader>
-        <p>
+        <p id="delete-dialog-description">
           Are you sure you want to delete{' '}
           <span className="font-semibold">{user?.name}</span>? This action
           cannot be undone.
         </p>
         <DialogFooter className="mt-5">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            aria-label="Cancel user deletion"
+          >
             Cancel
           </Button>
-          <Button variant="destructive" onClick={() => user && onConfirm(user)}>
+          <Button
+            variant="destructive"
+            onClick={() => user && onConfirm(user)}
+            aria-label={`Confirm deletion of ${user?.name}`}
+          >
             Delete
           </Button>
         </DialogFooter>

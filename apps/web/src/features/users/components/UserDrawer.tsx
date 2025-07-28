@@ -52,11 +52,25 @@ export const UserDrawer = memo(function UserDrawer({
       onOpenChange={onOpenChange}
       direction={isMobile ? 'bottom' : 'right'}
     >
-      <DrawerContent>
+      <DrawerContent
+        aria-labelledby="user-drawer-title"
+        aria-describedby="user-drawer-description"
+      >
         <DrawerHeader>
-          <DrawerTitle>{user ? 'Edit User' : 'Add User'}</DrawerTitle>
+          <DrawerTitle id="user-drawer-title">
+            {user ? 'Edit User' : 'Add User'}
+          </DrawerTitle>
+          <div id="user-drawer-description" className="sr-only">
+            {user
+              ? `Form to edit user information for ${user.name}`
+              : 'Form to add a new user to the system'}
+          </div>
         </DrawerHeader>
-        <div className="flex flex-col gap-4 overflow-y-auto px-4">
+        <div
+          className="flex flex-col gap-4 overflow-y-auto px-4"
+          role="region"
+          aria-label="User form content"
+        >
           <UserForm
             initialData={user}
             onSubmit={handleSubmit}
@@ -64,11 +78,19 @@ export const UserDrawer = memo(function UserDrawer({
           />
         </div>
         <DrawerFooter className="flex flex-col gap-2">
-          <Button type="submit" form="user-form">
+          <Button
+            type="submit"
+            form="user-form"
+            aria-label={
+              user ? `Update ${user.name}'s information` : 'Save new user'
+            }
+          >
             {user ? 'Update' : 'Save'}
           </Button>
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline" aria-label="Cancel and close form">
+              Cancel
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
