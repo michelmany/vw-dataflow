@@ -3,7 +3,7 @@ import { User } from '@libs/types';
 import { Container } from '@libs/ui';
 import { UserDataTable } from '../../features/users/components/UserDataTable';
 
-export function UserListPage() {
+function UserListPage() {
   const { users, addUser, editUser, removeUser, refetch } = useUsers();
   const { handleAddUser, handleEditUser, handleDeleteUser } = useUserActions({
     addUser,
@@ -65,3 +65,5 @@ export function UserListPage() {
     </Container>
   );
 }
+
+export default UserListPage;

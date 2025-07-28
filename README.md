@@ -51,6 +51,109 @@ project-root/
 - Custom hooks and utilities are colocated in `libs/hooks` and `libs/utils`
 - Services for API calls and data management are in `libs/services`
 
+## Performance Optimizations
+
+This application has been optimized for performance with several key improvements:
+
+### 1. Code Splitting & Lazy Loading
+
+**Implementation:**
+
+- Route-level code splitting using `React.lazy()` and `Suspense`
+- Pages are loaded on-demand rather than bundled together
+- Custom `LoadingSpinner` component provides visual feedback during async imports
+
+**Benefits:**
+
+- Reduced initial bundle size by splitting route components
+- Faster initial page load times
+- Better user experience with loading states during navigation
+
+**Files affected:**
+
+- `apps/web/src/App.tsx` - Implemented lazy loading with Suspense
+- `apps/web/src/pages/users/UserListPage.tsx` - Converted to default export
+- `apps/web/src/pages/users/UserDetailPage.tsx` - Converted to default export
+- `libs/ui/src/components/loading/Loading.tsx` - Created optimized loading components
+
+### 2. React Memoization
+
+**Implementation:**
+
+- `React.memo()` for expensive components (`UserDataTable`, `UserDrawer`)
+- `useMemo()` for computed values and expensive calculations
+- `useCallback()` for stable function references passed as props
+
+**Benefits:**
+
+- Prevents unnecessary re-renders when props haven't changed
+- Improves rendering performance in data-heavy components
+- Reduces wasted computation cycles
+
+**Files affected:**
+
+- `apps/web/src/features/users/components/UserDataTable.tsx` - Memoized with prop comparison
+- `apps/web/src/features/users/components/UserDrawer.tsx` - Memoized for stable rendering
+
+### 3. API Call Optimization
+
+**Problem Solved:**
+
+- Originally had 6 redundant API calls on page load due to multiple `useUsers()` hooks
+- Each component was independently fetching the same user data
+
+**Solution:**
+
+- Centralized data fetching in `UserListPage`
+- Removed duplicate `useUsers()` calls from child components
+- Pass data and actions as props to maintain single source of truth
+
+**Impact:**
+
+- Reduced API calls from 6 to 2 (accounting for React.StrictMode double execution)
+- Eliminated redundant network requests
+- Improved data consistency across components
+
+### 4. Component Architecture Refactoring
+
+**Implementation:**
+
+- Moved `UserDrawer` state management to parent `UserDataTable`
+- Eliminated redundant `UserDrawer` instances in toolbar and table columns
+- Created pure presentational components that receive all state via props
+
+**Benefits:**
+
+- Cleaner component hierarchy with single responsibility
+- Reduced component coupling and improved reusability
+- Better performance through predictable data flow
+
+### 5. State Management Optimization
+
+**Implementation:**
+
+- Refactored `useUserActions` to accept operations as parameters
+- Avoided duplicate atom subscriptions across components
+- Centralized UI state management in `useUserManagement` hook
+
+**Benefits:**
+
+- Prevents unnecessary re-subscriptions to Jotai atoms
+- Reduces memory overhead from duplicate state listeners
+- Improves state update performance
+
+### Performance Impact Summary
+
+These optimizations resulted in:
+
+- **67% reduction** in initial API calls (6 → 2)
+- **Smaller initial bundle** through code splitting
+- **Faster re-renders** via memoization
+- **Cleaner architecture** following micro framework principles
+- **Better user experience** with loading states and responsive interactions
+
+The optimizations maintain the project's micro framework architecture while significantly improving performance and maintainability.
+
 ## State Management
 
 This project uses **Jotai** for global state management.

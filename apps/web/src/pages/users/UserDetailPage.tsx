@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserShowcase } from '../../features/users/components/UserShowcase';
 
-export function UserDetailPage() {
+function UserDetailPage() {
   const { id } = useParams();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
-    getUserById(id)
+    getUserById(Number(id))
       .then((data: User) => {
         setUser(data);
         setLoading(false);
@@ -29,3 +29,5 @@ export function UserDetailPage() {
     </section>
   );
 }
+
+export default UserDetailPage;
