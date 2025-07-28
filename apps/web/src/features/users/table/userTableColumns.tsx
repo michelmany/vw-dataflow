@@ -1,6 +1,18 @@
 import { User } from '@libs/types';
-import { DataTableColumnHeader } from '@libs/ui';
+import {
+  Button,
+  DataTableColumnHeader,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@libs/ui';
+import { capitalize } from '@libs/utils';
 import { ColumnDef } from '@tanstack/react-table';
+import { MoreVertical } from 'lucide-react';
+import { useState } from 'react';
+import { UserDrawer } from '../components/UserDrawer';
 
 export const userTableColumns: ColumnDef<User>[] = [
   {
@@ -32,6 +44,7 @@ export const userTableColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Role" />
     ),
     enableSorting: true,
+    cell: ({ row }) => <div>{capitalize(row.getValue('role'))}</div>,
   },
   {
     accessorKey: 'team',
@@ -39,6 +52,7 @@ export const userTableColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Team" />
     ),
     enableSorting: true,
+    cell: ({ row }) => <div>{capitalize(row.getValue('team'))}</div>,
   },
   {
     accessorKey: 'status',
@@ -48,5 +62,45 @@ export const userTableColumns: ColumnDef<User>[] = [
     enableSorting: true,
     enableColumnFilter: true,
     filterFn: 'equals',
+    cell: ({ row }) => <div>{capitalize(row.getValue('status'))}</div>,
+  },
+  {
+    accessorKey: 'actions',
+    cell: ({ row }) => {
+      const user = row.original;
+      const [openDrawer, setOpenDrawer] = useState(false);
+
+      return (
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+                size="icon"
+              >
+                <MoreVertical className="h-4 w-4" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-32">
+              <DropdownMenuItem onClick={() => setOpenDrawer(true)}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-destructive bg-transparent !hover:text-destructive !hover:bg-red/20">
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <UserDrawer
+            open={openDrawer}
+            onOpenChange={setOpenDrawer}
+            user={user}
+          />
+        </>
+      );
+    },
   },
 ];

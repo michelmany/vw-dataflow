@@ -2,8 +2,6 @@
 
 A modern React + TypeScript application built with a **micro framework architecture**, designed for maintainability, reusability, and scalability.
 
----
-
 ## Project Structure
 
 This project follows a **monorepo-style micro frontend architecture**, separating concerns by domain:
@@ -34,8 +32,6 @@ project-root/
 └── package.json            → Root workspace manager
 ```
 
----
-
 ## Tech Stack
 
 - **React 18+** with TypeScript
@@ -46,8 +42,6 @@ project-root/
 - **JSON Server** for mocking RESTful API endpoints
 - **Jotai** for global state management
 
----
-
 ## Architecture Principles
 
 - Micro-framework layout: separate UI, logic, and services into reusable libraries
@@ -56,8 +50,6 @@ project-root/
 - App-specific composition and page layouts live only inside `apps/web`
 - Custom hooks and utilities are colocated in `libs/hooks` and `libs/utils`
 - Services for API calls and data management are in `libs/services`
-
----
 
 ## State Management
 
@@ -72,9 +64,7 @@ Jotai provides an atomic, minimalistic approach to handling global state in Reac
 
 This setup ensures clean separation of state logic and component presentation while allowing local overrides or expansions if needed.
 
----
-
-### Client-side vs Server-side Filtering & Pagination
+## Client-side vs Server-side Filtering & Pagination
 
 For this challenge, I implemented **client-side filtering, sorting, and pagination**, since this matches the requirements and integrates smoothly with the mock API (JSON Server). All user data is fetched once, and sorting, filtering, and pagination are handled in-memory.
 
@@ -93,8 +83,6 @@ In addition, if time permits, I plan to extend **JSON Server** to handle **serve
 
 This **dual approach** demonstrates awareness of scalability trade-offs and the ability to adapt the solution to different contexts.
 
----
-
 ## Commit Convention
 
 This repo follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
@@ -110,8 +98,6 @@ Types used:
 - `fix`: bug fixes
 - `chore`: tooling, configs, setup
 - `refactor`, `test`, `docs`, etc.
-
----
 
 ## AI Tool Usage Documentation
 

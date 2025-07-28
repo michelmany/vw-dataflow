@@ -17,12 +17,19 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 /**
- * Fetch all users from the API.
- * @returns Promise resolving to an array of User objects
+ * Fetch all users from the API and normalize values.
+ * @returns Promise resolving to an array of normalized User objects
  */
 export async function getUsers(): Promise<User[]> {
   const response = await fetch(BASE_URL);
-  return handleResponse<User[]>(response);
+  const data = await handleResponse<User[]>(response);
+
+  return data.map(user => ({
+    ...user,
+    role: user.role?.toLowerCase(),
+    team: user.team?.toLowerCase(),
+    status: user.status?.toLowerCase(),
+  }));
 }
 
 /**
