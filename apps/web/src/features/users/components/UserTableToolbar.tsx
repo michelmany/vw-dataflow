@@ -8,18 +8,17 @@ import {
 } from '@libs/ui';
 import { Table } from '@tanstack/react-table';
 import { FunnelIcon, X } from 'lucide-react';
-import { useState } from 'react';
 import { userFilters, type UserFilter } from '../table/userFilters';
-import { UserDrawer } from './UserDrawer';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  onAddUserClick?: () => void;
 }
 
 export function UserDataTableToolbar<TData>({
   table,
+  onAddUserClick,
 }: DataTableToolbarProps<TData>) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -77,10 +76,9 @@ export function UserDataTableToolbar<TData>({
           )}
         </div>
       </div>
-      <Button variant="default" size="sm" onClick={() => setDrawerOpen(true)}>
+      <Button variant="default" size="sm" onClick={onAddUserClick}>
         Add User
       </Button>
-      <UserDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
     </div>
   );
 }

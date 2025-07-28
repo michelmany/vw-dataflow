@@ -1,4 +1,3 @@
-import { useUsers } from '@libs/hooks';
 import { User } from '@libs/types';
 import { DataTable, DataTablePagination } from '@libs/ui';
 import {
@@ -18,14 +17,41 @@ import * as React from 'react';
 import { useState } from 'react';
 import { userTableColumns } from '../table/userTableColumns';
 import { UserDeleteDialog } from './UserDeleteDialog';
+import { UserDrawer } from './UserDrawer';
 import { UserDataTableToolbar } from './UserTableToolbar';
 
 interface UserDataTableProps {
   data: User[];
+  onDeleteUser: (user: User) => void;
+  onEditUser: (user: User) => void;
+  onAddUser: () => void;
+  // Dialog and drawer state
+  deleteDialogOpen: boolean;
+  userToDelete: User | null;
+  onDeleteDialogClose: () => void;
+  onConfirmDelete: () => Promise<void>;
+  // Drawer state
+  drawerOpen: boolean;
+  userToEdit?: User;
+  onDrawerClose: () => void;
+  onUserSubmit: (formData: Partial<User>) => Promise<void>;
 }
 
 // This component renders a data table for users
-export function UserDataTable({ data }: UserDataTableProps) {
+export function UserDataTable({
+  data,
+  onDeleteUser,
+  onEditUser,
+  onAddUser,
+  deleteDialogOpen,
+  userToDelete,
+  onDeleteDialogClose,
+  onConfirmDelete,
+  drawerOpen,
+  userToEdit,
+  onDrawerClose,
+  onUserSubmit,
+}: UserDataTableProps) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -34,28 +60,6 @@ export function UserDataTable({ data }: UserDataTableProps) {
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<User | null>(null);
-  const { removeUser, refetch } = useUsers();
-
-  const handleDeleteClick = (user: User) => {
-    setUserToDelete(user);
-    setDeleteDialogOpen(true);
-  };
-
-  const confirmDelete = async () => {
-    if (!userToDelete) return;
-
-    try {
-      await removeUser(userToDelete.id);
-      await refetch();
-    } catch (error) {
-      console.error('Failed to delete user:', error);
-    } finally {
-      setDeleteDialogOpen(false);
-      setUserToDelete(null);
-    }
-  };
 
   function globalFilterFn(
     row: Row<User>,
@@ -72,7 +76,7 @@ export function UserDataTable({ data }: UserDataTableProps) {
 
   const table = useReactTable({
     data,
-    columns: userTableColumns(handleDeleteClick),
+    columns: userTableColumns(onDeleteUser, onEditUser),
     state: {
       sorting,
       columnVisibility,
@@ -83,7 +87,7 @@ export function UserDataTable({ data }: UserDataTableProps) {
     onGlobalFilterChange: setGlobalFilter,
     initialState: {
       pagination: {
-        pageSize: 12,
+        pageSize: 10,
       },
     },
     enableRowSelection: false,
@@ -102,14 +106,21 @@ export function UserDataTable({ data }: UserDataTableProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <UserDataTableToolbar table={table} />
+      <UserDataTableToolbar table={table} onAddUserClick={onAddUser} />
       <DataTable table={table} />
       <DataTablePagination table={table} />
       <UserDeleteDialog
         open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
+        onOpenChange={onDeleteDialogClose}
         user={userToDelete}
-        onConfirm={confirmDelete}
+        onConfirm={onConfirmDelete}
+      />
+      <UserDrawer
+        open={drawerOpen}
+        onOpenChange={onDrawerClose}
+        user={userToEdit}
+        onSubmit={onUserSubmit}
+        onUserUpdated={onDrawerClose}
       />
     </div>
   );

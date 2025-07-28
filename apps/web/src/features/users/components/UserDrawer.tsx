@@ -1,4 +1,4 @@
-import { useIsMobile, useUsers } from '@libs/hooks';
+import { useIsMobile } from '@libs/hooks';
 import { User } from '@libs/types';
 import {
   Button,
@@ -15,20 +15,23 @@ interface UserDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   user?: User;
+  onSubmit?: (formData: Partial<User>) => Promise<void>;
+  onUserUpdated?: () => void;
 }
 
-export function UserDrawer({ open, onOpenChange, user }: UserDrawerProps) {
+export function UserDrawer({
+  open,
+  onOpenChange,
+  user,
+  onSubmit,
+  onUserUpdated,
+}: UserDrawerProps) {
   const isMobile = useIsMobile();
-  const { addUser, editUser, refetch } = useUsers();
 
   async function handleSubmit(formData: Partial<User>) {
     try {
-      if (user) {
-        await editUser(user.id, formData);
-      } else {
-        await addUser(formData);
-      }
-      await refetch();
+      await onSubmit?.(formData);
+      onUserUpdated?.();
       onOpenChange(false);
     } catch (err) {
       console.error('Error submitting form:', err);
