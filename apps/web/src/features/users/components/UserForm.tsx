@@ -34,28 +34,49 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
       id="user-form"
       onSubmit={handleSubmit}
       className="flex flex-col gap-4"
+      role="form"
+      aria-label={initialData ? 'Edit user form' : 'Add new user form'}
     >
       {/* Name */}
       <div className="flex flex-col gap-2">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="name">Name *</Label>
         <Input
           id="name"
+          name="name"
           value={formData.name || ''}
           onChange={e => handleChange('name', e.target.value)}
           required
+          aria-describedby="name-required"
+          aria-invalid={
+            !formData.name && formData.name !== undefined ? 'true' : 'false'
+          }
         />
+        <span id="name-required" className="sr-only">
+          Name is required
+        </span>
       </div>
 
       {/* Email */}
       <div className="flex flex-col gap-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">Email Address *</Label>
         <Input
           id="email"
+          name="email"
           type="email"
           value={formData.email || ''}
           onChange={e => handleChange('email', e.target.value)}
           required
+          aria-describedby="email-required email-format"
+          aria-invalid={
+            !formData.email && formData.email !== undefined ? 'true' : 'false'
+          }
         />
+        <span id="email-required" className="sr-only">
+          Email address is required
+        </span>
+        <span id="email-format" className="sr-only">
+          Please enter a valid email address
+        </span>
       </div>
 
       {/* Role, Team and Status */}
@@ -67,8 +88,13 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
             onValueChange={value =>
               handleChange(filter.columnKey as keyof User, value)
             }
+            aria-label={`Select ${filter.label.toLowerCase()}`}
           >
-            <SelectTrigger id={filter.columnKey} className="w-full">
+            <SelectTrigger
+              id={filter.columnKey}
+              className="w-full"
+              aria-describedby={`${filter.columnKey}-description`}
+            >
               <SelectValue
                 placeholder={`Select a ${filter.label.toLowerCase()}`}
               />
@@ -81,6 +107,9 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
               ))}
             </SelectContent>
           </Select>
+          <span id={`${filter.columnKey}-description`} className="sr-only">
+            Choose the user's {filter.label.toLowerCase()}
+          </span>
         </div>
       ))}
     </form>

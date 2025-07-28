@@ -27,6 +27,14 @@ export function DataTableColumnHeader<TData, TValue>({
     return <div className={cn(className)}>{title}</div>;
   }
 
+  const sortDirection = column.getIsSorted();
+  const sortLabel =
+    sortDirection === 'asc'
+      ? `${title} sorted ascending`
+      : sortDirection === 'desc'
+      ? `${title} sorted descending`
+      : `Sort ${title}`;
+
   return (
     <div className={cn('flex items-center gap-2', className)}>
       <DropdownMenu>
@@ -35,33 +43,54 @@ export function DataTableColumnHeader<TData, TValue>({
             variant="ghost"
             size="sm"
             className="data-[state=open]:bg-accent -ml-3 h-8"
+            aria-label={sortLabel}
+            aria-describedby={`${title.toLowerCase()}-sort-description`}
           >
             <span>{title}</span>
             {column.getIsSorted() === 'desc' ? (
-              <ArrowDown className="ml-2 h-4 w-4" />
+              <ArrowDown className="ml-2 h-4 w-4" aria-hidden="true" />
             ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUp className="ml-2 h-4 w-4" />
+              <ArrowUp className="ml-2 h-4 w-4" aria-hidden="true" />
             ) : (
-              <ChevronsUpDown className="ml-2 h-4 w-4" />
+              <ChevronsUpDown className="ml-2 h-4 w-4" aria-hidden="true" />
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUp className="mr-2 h-3 w-3" />
+        <DropdownMenuContent
+          align="start"
+          aria-label={`Sort and filter options for ${title}`}
+        >
+          <DropdownMenuItem
+            onClick={() => column.toggleSorting(false)}
+            aria-label={`Sort ${title} in ascending order`}
+          >
+            <ArrowUp className="mr-2 h-3 w-3" aria-hidden="true" />
             Asc
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDown className="mr-2 h-3 w-3" />
+          <DropdownMenuItem
+            onClick={() => column.toggleSorting(true)}
+            aria-label={`Sort ${title} in descending order`}
+          >
+            <ArrowDown className="mr-2 h-3 w-3" aria-hidden="true" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <EyeOff className="mr-2 h-3 w-3" />
+          <DropdownMenuItem
+            onClick={() => column.toggleVisibility(false)}
+            aria-label={`Hide ${title} column`}
+          >
+            <EyeOff className="mr-2 h-3 w-3" aria-hidden="true" />
             Hide
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <span id={`${title.toLowerCase()}-sort-description`} className="sr-only">
+        {sortDirection
+          ? `Currently sorted ${
+              sortDirection === 'asc' ? 'ascending' : 'descending'
+            }`
+          : 'Not sorted'}
+      </span>
     </div>
   );
 }
