@@ -1,6 +1,9 @@
+import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { UserDetailPage } from './pages/users/UserDetailPage';
-import { UserListPage } from './pages/users/UserListPage';
+
+// Lazy load pages for code splitting
+const UserListPage = lazy(() => import('./pages/users/UserListPage'));
+const UserDetailPage = lazy(() => import('./pages/users/UserDetailPage'));
 
 function App() {
   return (
@@ -15,10 +18,18 @@ function App() {
         </div>
       </nav>
 
-      <Routes>
-        <Route path="/" element={<UserListPage />} />
-        <Route path="/user/:id" element={<UserDetailPage />} />
-      </Routes>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center min-h-[200px]">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<UserListPage />} />
+          <Route path="/user/:id" element={<UserDetailPage />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }

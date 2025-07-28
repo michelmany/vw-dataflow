@@ -14,7 +14,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import * as React from 'react';
-import { useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { userTableColumns } from '../table/userTableColumns';
 import { UserDeleteDialog } from './UserDeleteDialog';
 import { UserDrawer } from './UserDrawer';
@@ -38,7 +38,7 @@ interface UserDataTableProps {
 }
 
 // This component renders a data table for users
-export function UserDataTable({
+export const UserDataTable = memo(function UserDataTable({
   data,
   onDeleteUser,
   onEditUser,
@@ -61,22 +61,28 @@ export function UserDataTable({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
 
-  function globalFilterFn(
-    row: Row<User>,
-    _columnId: string,
-    filterValue: string
-  ) {
-    const search = filterValue.toLowerCase();
+  // Memoize the global filter function to prevent recreation on each render
+  const globalFilterFn = React.useCallback(
+    (row: Row<User>, _columnId: string, filterValue: string) => {
+      const search = filterValue.toLowerCase();
+      return ['name', 'email', 'role', 'team', 'status'].some(key => {
+        const value = row.getValue(key);
+        return (
+          typeof value === 'string' && value.toLowerCase().includes(search)
+        );
+      });
+    },
+    []
+  );
 
-    return ['name', 'email', 'role', 'team', 'status'].some(key => {
-      const value = row.getValue(key);
-      return typeof value === 'string' && value.toLowerCase().includes(search);
-    });
-  }
-
+  // Memoize columns to prevent recreation when handlers change
+  const columns = useMemo(
+    () => userTableColumns(onDeleteUser, onEditUser),
+    [onDeleteUser, onEditUser]
+  );
   const table = useReactTable({
     data,
-    columns: userTableColumns(onDeleteUser, onEditUser),
+    columns,
     state: {
       sorting,
       columnVisibility,
@@ -124,4 +130,4 @@ export function UserDataTable({
       />
     </div>
   );
-}
+});

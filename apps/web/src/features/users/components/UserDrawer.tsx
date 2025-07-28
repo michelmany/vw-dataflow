@@ -9,6 +9,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@libs/ui';
+import { memo, useCallback } from 'react';
 import { UserForm } from './UserForm';
 
 interface UserDrawerProps {
@@ -19,7 +20,7 @@ interface UserDrawerProps {
   onUserUpdated?: () => void;
 }
 
-export function UserDrawer({
+export const UserDrawer = memo(function UserDrawer({
   open,
   onOpenChange,
   user,
@@ -28,15 +29,22 @@ export function UserDrawer({
 }: UserDrawerProps) {
   const isMobile = useIsMobile();
 
-  async function handleSubmit(formData: Partial<User>) {
-    try {
-      await onSubmit?.(formData);
-      onUserUpdated?.();
-      onOpenChange(false);
-    } catch (err) {
-      console.error('Error submitting form:', err);
-    }
-  }
+  const handleSubmit = useCallback(
+    async (formData: Partial<User>) => {
+      try {
+        await onSubmit?.(formData);
+        onUserUpdated?.();
+        onOpenChange(false);
+      } catch (err) {
+        console.error('Error submitting form:', err);
+      }
+    },
+    [onSubmit, onUserUpdated, onOpenChange]
+  );
+
+  const handleCancel = useCallback(() => {
+    onOpenChange(false);
+  }, [onOpenChange]);
 
   return (
     <Drawer
@@ -52,7 +60,7 @@ export function UserDrawer({
           <UserForm
             initialData={user}
             onSubmit={handleSubmit}
-            onCancel={() => onOpenChange(false)}
+            onCancel={handleCancel}
           />
         </div>
         <DrawerFooter className="flex flex-col gap-2">
@@ -66,4 +74,4 @@ export function UserDrawer({
       </DrawerContent>
     </Drawer>
   );
-}
+});

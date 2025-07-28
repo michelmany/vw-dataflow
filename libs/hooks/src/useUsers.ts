@@ -23,7 +23,7 @@ export function useUsers() {
     if (!usersLoaded) {
       triggerFetch();
     }
-  }, [usersLoaded, triggerFetch]);
+  }, [usersLoaded]); // Remove triggerFetch from dependencies
 
   const refetchUsers = useCallback(async () => {
     await triggerFetch();
