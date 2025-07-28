@@ -18,6 +18,7 @@ import { memo, useMemo, useState } from 'react';
 import { userTableColumns } from '../table/userTableColumns';
 import { UserDeleteDialog } from './UserDeleteDialog';
 import { UserDrawer } from './UserDrawer';
+import { UserShowcase } from './UserShowcase';
 import { UserDataTableToolbar } from './UserTableToolbar';
 
 interface UserDataTableProps {
@@ -35,6 +36,11 @@ interface UserDataTableProps {
   userToEdit?: User;
   onDrawerClose: () => void;
   onUserSubmit: (formData: Partial<User>) => Promise<void>;
+  // Showcase state
+  showcaseOpen: boolean;
+  userToShowcase: User | null;
+  onShowcaseClose: () => void;
+  onViewUserDetails: (user: User) => void;
 }
 
 // This component renders a data table for users
@@ -51,6 +57,10 @@ export const UserDataTable = memo(function UserDataTable({
   userToEdit,
   onDrawerClose,
   onUserSubmit,
+  showcaseOpen,
+  userToShowcase,
+  onShowcaseClose,
+  onViewUserDetails,
 }: UserDataTableProps) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -77,8 +87,8 @@ export const UserDataTable = memo(function UserDataTable({
 
   // Memoize columns to prevent recreation when handlers change
   const columns = useMemo(
-    () => userTableColumns(onDeleteUser, onEditUser),
-    [onDeleteUser, onEditUser]
+    () => userTableColumns(onDeleteUser, onEditUser, onViewUserDetails),
+    [onDeleteUser, onEditUser, onViewUserDetails]
   );
   const table = useReactTable({
     data,
@@ -127,6 +137,11 @@ export const UserDataTable = memo(function UserDataTable({
         user={userToEdit}
         onSubmit={onUserSubmit}
         onUserUpdated={onDrawerClose}
+      />
+      <UserShowcase
+        open={showcaseOpen}
+        onOpenChange={onShowcaseClose}
+        user={userToShowcase}
       />
     </div>
   );

@@ -22,7 +22,7 @@ export function UserDataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div className="flex flex-1 items-center gap-2">
         <Input
           id="search"
