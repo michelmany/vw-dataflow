@@ -10,6 +10,10 @@ export interface UserManagementState {
   drawerOpen: boolean;
   userToEdit: User | null;
   drawerMode: 'add' | 'edit';
+
+  // Showcase drawer state
+  showcaseOpen: boolean;
+  userToShowcase: User | null;
 }
 
 export interface UserManagementActions {
@@ -18,6 +22,8 @@ export interface UserManagementActions {
   openAddDrawer: () => void;
   openEditDrawer: (user: User) => void;
   closeDrawer: () => void;
+  openShowcase: (user: User) => void;
+  closeShowcase: () => void;
 }
 
 /**
@@ -30,6 +36,8 @@ export function useUserManagement(): UserManagementState &
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState<User | null>(null);
+  const [showcaseOpen, setShowcaseOpen] = useState(false);
+  const [userToShowcase, setUserToShowcase] = useState<User | null>(null);
 
   const openDeleteDialog = useCallback((user: User) => {
     setUserToDelete(user);
@@ -56,6 +64,16 @@ export function useUserManagement(): UserManagementState &
     setUserToEdit(null);
   }, []);
 
+  const openShowcase = useCallback((user: User) => {
+    setUserToShowcase(user);
+    setShowcaseOpen(true);
+  }, []);
+
+  const closeShowcase = useCallback(() => {
+    setShowcaseOpen(false);
+    setUserToShowcase(null);
+  }, []);
+
   const drawerMode: 'add' | 'edit' = userToEdit ? 'edit' : 'add';
 
   return {
@@ -65,6 +83,8 @@ export function useUserManagement(): UserManagementState &
     drawerOpen,
     userToEdit,
     drawerMode,
+    showcaseOpen,
+    userToShowcase,
 
     // Actions
     openDeleteDialog,
@@ -72,5 +92,7 @@ export function useUserManagement(): UserManagementState &
     openAddDrawer,
     openEditDrawer,
     closeDrawer,
+    openShowcase,
+    closeShowcase,
   };
 }

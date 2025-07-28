@@ -14,7 +14,8 @@ import { MoreVertical } from 'lucide-react';
 
 export const userTableColumns = (
   onDelete: (user: User) => void,
-  onEdit?: (user: User) => void
+  onEdit?: (user: User) => void,
+  onViewDetails?: (user: User) => void
 ): ColumnDef<User>[] => [
   {
     accessorKey: 'name',
@@ -22,7 +23,24 @@ export const userTableColumns = (
       <DataTableColumnHeader column={column} title="Name" />
     ),
     enableSorting: true,
-    cell: ({ row }) => <div className="capitalize">{row.getValue('name')}</div>,
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <button
+          className="capitalize text-primary hover:text-primary/80 hover:underline focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-sm"
+          onClick={() => onViewDetails?.(user)}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onViewDetails?.(user);
+            }
+          }}
+        >
+          {row.getValue('name')}
+        </button>
+      );
+    },
     filterFn: (row, columnId, filterValue) =>
       String(row.getValue(columnId))
         .toLowerCase()

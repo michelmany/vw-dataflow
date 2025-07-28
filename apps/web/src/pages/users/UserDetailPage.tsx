@@ -2,7 +2,6 @@ import { getUserById } from '@libs/services';
 import { User } from '@libs/types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { UserShowcase } from '../../features/users/components/UserShowcase';
 
 function UserDetailPage() {
   const { id } = useParams();
@@ -25,7 +24,7 @@ function UserDetailPage() {
   return (
     <section className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">User Details</h1>
-      <UserShowcase user={user} />
+      {/* <UserShowcase user={user} /> */}
     </section>
   );
 }

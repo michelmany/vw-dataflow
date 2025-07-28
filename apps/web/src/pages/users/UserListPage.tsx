@@ -17,11 +17,15 @@ function UserListPage() {
     drawerOpen,
     userToEdit,
     drawerMode,
+    showcaseOpen,
+    userToShowcase,
     openDeleteDialog,
     closeDeleteDialog,
     openAddDrawer,
     openEditDrawer,
     closeDrawer,
+    openShowcase,
+    closeShowcase,
   } = useUserManagement();
 
   const handleConfirmDelete = async () => {
@@ -61,6 +65,10 @@ function UserListPage() {
         userToEdit={userToEdit || undefined}
         onDrawerClose={closeDrawer}
         onUserSubmit={handleUserSubmit}
+        showcaseOpen={showcaseOpen}
+        userToShowcase={userToShowcase}
+        onShowcaseClose={closeShowcase}
+        onViewUserDetails={openShowcase}
       />
     </Container>
   );
