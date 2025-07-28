@@ -2,9 +2,9 @@
   "users": [
     {
       "id": 1,
-      "name": "Anthony Delgados",
+      "name": "Anthony Delgado",
       "email": "kathyroman@hotmail.com",
-      "role": "editor",
+      "role": "admin",
       "status": "active",
       "team": "marketing",
       "avatar": "https://i.pravatar.cc/150?u=6eae6308",
@@ -972,11 +972,11 @@
     },
     {
       "id": 99,
-      "name": "Aaron Knight",
+      "name": "Aaron Knights",
       "email": "bennettmichael@franklin.com",
       "role": "viewer",
       "status": "inactive",
-      "team": "Development",
+      "team": "development",
       "avatar": "https://i.pravatar.cc/150?u=4d4b2f56",
       "createdAt": "2023-11-19T17:11:45"
     },
@@ -1989,6 +1989,28 @@
       "team": "Finance",
       "avatar": "https://i.pravatar.cc/150?u=eb8f769e",
       "createdAt": "2024-04-24T16:44:19"
+    },
+    {
+      "name": "Michel Moraes",
+      "email": "michel@nitdesign.com.br",
+      "role": "admin",
+      "id": 201
+    },
+    {
+      "name": "Alexandra Carneiro",
+      "email": "ale@nitdesign.com.br",
+      "role": "admin",
+      "team": "hr",
+      "status": "active",
+      "id": 202
+    },
+    {
+      "name": "teste",
+      "email": "teste@teste.com",
+      "role": "admin",
+      "team": "development",
+      "status": "active",
+      "id": 203
     }
   ]
 }
