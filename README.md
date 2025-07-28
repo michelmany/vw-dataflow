@@ -74,6 +74,27 @@ This setup ensures clean separation of state logic and component presentation wh
 
 ---
 
+### Client-side vs Server-side Filtering & Pagination
+
+For this challenge, I implemented **client-side filtering, sorting, and pagination**, since this matches the requirements and integrates smoothly with the mock API (JSON Server). All user data is fetched once, and sorting, filtering, and pagination are handled in-memory.
+
+In addition, if time permits, I plan to extend **JSON Server** to handle **server-side style filtering, sorting, and pagination** using query parameters (`_page`, `_limit`, `_sort`, `_order`, etc). This simulates how a production backend would handle large datasets efficiently.
+
+- **Client-side approach:**
+
+  - ✅ Fast to implement
+  - ✅ Simple state management in the frontend
+  - ⚠️ Less scalable for very large datasets (all data lives in memory)
+
+- **Server-side approach:**
+  - ✅ More scalable (only requested slice is fetched)
+  - ✅ Reduces frontend memory usage
+  - ⚠️ Requires backend query handling and slightly more complex integration
+
+This **dual approach** demonstrates awareness of scalability trade-offs and the ability to adapt the solution to different contexts.
+
+---
+
 ## Commit Convention
 
 This repo follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
