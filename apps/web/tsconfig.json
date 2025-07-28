@@ -10,10 +10,7 @@
       "@libs/*": ["../../libs/*/src"]
     }
   },
-  "include": [
-    "src",
-    "../../libs/ui/src/components/table/DataTableColumnHeader.tsx"
-  ],
+  "include": ["src"],
   "references": [
     {
       "path": "../../libs/ui"

@@ -14,7 +14,9 @@ import { MoreVertical } from 'lucide-react';
 import { useState } from 'react';
 import { UserDrawer } from '../components/UserDrawer';
 
-export const userTableColumns: ColumnDef<User>[] = [
+export const userTableColumns = (
+  onDelete: (user: User) => void
+): ColumnDef<User>[] => [
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -78,6 +80,7 @@ export const userTableColumns: ColumnDef<User>[] = [
                 variant="ghost"
                 className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
                 size="icon"
+                onClick={e => e.stopPropagation()}
               >
                 <MoreVertical className="h-4 w-4" />
                 <span className="sr-only">Open menu</span>
@@ -88,7 +91,10 @@ export const userTableColumns: ColumnDef<User>[] = [
                 Edit
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive bg-transparent !hover:text-destructive !hover:bg-red/20">
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => onDelete(user)}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>

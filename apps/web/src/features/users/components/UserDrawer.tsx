@@ -1,4 +1,4 @@
-import { useIsMobile } from '@libs/hooks';
+import { useIsMobile, useUsers } from '@libs/hooks';
 import { User } from '@libs/types';
 import {
   Button,
@@ -15,25 +15,25 @@ interface UserDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   user?: User;
-  onSubmit?: (data: Partial<User>) => void;
 }
 
-export function UserDrawer({
-  open,
-  onOpenChange,
-  user,
-  onSubmit,
-}: UserDrawerProps) {
+export function UserDrawer({ open, onOpenChange, user }: UserDrawerProps) {
   const isMobile = useIsMobile();
+  const { addUser, editUser, refetch } = useUsers();
 
-  const handleFormSubmit = (data: Partial<User>) => {
-    if (onSubmit) {
-      onSubmit(data);
-    } else {
-      console.log('Submitted data', data); // fallback for now
+  async function handleSubmit(formData: Partial<User>) {
+    try {
+      if (user) {
+        await editUser(user.id, formData);
+      } else {
+        await addUser(formData);
+      }
+      await refetch();
+      onOpenChange(false);
+    } catch (err) {
+      console.error('Error submitting form:', err);
     }
-    onOpenChange(false);
-  };
+  }
 
   return (
     <Drawer
@@ -48,7 +48,7 @@ export function UserDrawer({
         <div className="flex flex-col gap-4 overflow-y-auto px-4">
           <UserForm
             initialData={user}
-            onSubmit={handleFormSubmit}
+            onSubmit={handleSubmit}
             onCancel={() => onOpenChange(false)}
           />
         </div>

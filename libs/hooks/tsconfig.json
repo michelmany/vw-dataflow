@@ -20,6 +20,12 @@
     },
     {
       "path": "../../libs/utils"
+    },
+    {
+      "path": "../../libs/services"
+    },
+    {
+      "path": "../../libs/ui"
     }
   ]
 }
