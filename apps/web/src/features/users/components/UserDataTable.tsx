@@ -1,3 +1,4 @@
+import { useUsers } from '@libs/hooks';
 import { User } from '@libs/types';
 import { DataTable, DataTablePagination } from '@libs/ui';
 import {
@@ -16,6 +17,7 @@ import {
 import * as React from 'react';
 import { useState } from 'react';
 import { userTableColumns } from '../table/userTableColumns';
+import { UserDeleteDialog } from './UserDeleteDialog';
 import { UserDataTableToolbar } from './UserTableToolbar';
 
 interface UserDataTableProps {
@@ -32,6 +34,28 @@ export function UserDataTable({ data }: UserDataTableProps) {
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const { removeUser, refetch } = useUsers();
+
+  const handleDeleteClick = (user: User) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!userToDelete) return;
+
+    try {
+      await removeUser(userToDelete.id);
+      await refetch();
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+    } finally {
+      setDeleteDialogOpen(false);
+      setUserToDelete(null);
+    }
+  };
 
   function globalFilterFn(
     row: Row<User>,
@@ -48,7 +72,7 @@ export function UserDataTable({ data }: UserDataTableProps) {
 
   const table = useReactTable({
     data,
-    columns: userTableColumns,
+    columns: userTableColumns(handleDeleteClick),
     state: {
       sorting,
       columnVisibility,
@@ -62,7 +86,7 @@ export function UserDataTable({ data }: UserDataTableProps) {
         pageSize: 12,
       },
     },
-    enableRowSelection: true,
+    enableRowSelection: false,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -81,6 +105,12 @@ export function UserDataTable({ data }: UserDataTableProps) {
       <UserDataTableToolbar table={table} />
       <DataTable table={table} />
       <DataTablePagination table={table} />
+      <UserDeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        user={userToDelete}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

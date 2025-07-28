@@ -2,11 +2,11 @@
   "users": [
     {
       "id": 1,
-      "name": "Anthony Delgado",
+      "name": "Anthony Delgados",
       "email": "kathyroman@hotmail.com",
       "role": "editor",
       "status": "active",
-      "team": "Marketing",
+      "team": "marketing",
       "avatar": "https://i.pravatar.cc/150?u=6eae6308",
       "createdAt": "2025-04-19T07:18:38"
     },
@@ -129,16 +129,6 @@
       "team": "HR",
       "avatar": "https://i.pravatar.cc/150?u=9abcd968",
       "createdAt": "2024-09-19T17:47:33"
-    },
-    {
-      "id": 14,
-      "name": "Kelly Thomas",
-      "email": "jamiethomas@gmail.com",
-      "role": "viewer",
-      "status": "inactive",
-      "team": "HR",
-      "avatar": "https://i.pravatar.cc/150?u=98764cd1",
-      "createdAt": "2025-04-19T17:20:51"
     },
     {
       "id": 15,

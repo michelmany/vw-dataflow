@@ -13,7 +13,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "types": ["react", "node"], // ✅ Add this
+    "types": ["react", "node"],
     "typeRoots": ["./node_modules/@types"],
 
     "baseUrl": ".",

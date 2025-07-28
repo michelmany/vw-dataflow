@@ -20,8 +20,8 @@ interface UserFormProps {
 export function UserForm({ initialData, onSubmit }: UserFormProps) {
   const [formData, setFormData] = useState<Partial<User>>(initialData || {});
 
-  const handleChange = (field: keyof User, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleChange = (key: keyof User, value: string) => {
+    setFormData({ ...formData, [key]: value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {

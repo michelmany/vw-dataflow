@@ -37,7 +37,7 @@ export async function getUsers(): Promise<User[]> {
  * @param id - The user's ID
  * @returns Promise resolving to the User object
  */
-export async function getUserById(id: string): Promise<User> {
+export async function getUserById(id: number): Promise<User> {
   const response = await fetch(`${BASE_URL}/${id}`);
   return handleResponse<User>(response);
 }
@@ -63,7 +63,7 @@ export async function createUser(user: Partial<User>): Promise<User> {
  * @returns Promise resolving to the updated User
  */
 export async function updateUser(
-  id: string,
+  id: number,
   updates: Partial<User>
 ): Promise<User> {
   const response = await fetch(`${BASE_URL}/${id}`, {
@@ -79,7 +79,7 @@ export async function updateUser(
  * @param id - The user's ID
  * @returns Promise resolving to the deleted User
  */
-export async function deleteUser(id: string): Promise<User> {
+export async function deleteUser(id: number): Promise<User> {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'DELETE',
   });
