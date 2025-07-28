@@ -53,106 +53,45 @@ project-root/
 
 ## Performance Optimizations
 
-This application has been optimized for performance with several key improvements:
+This project implements key performance improvements for speed and scalability.
 
-### 1. Code Splitting & Lazy Loading
+### Key Enhancements
 
-**Implementation:**
+- **Code Splitting & Lazy Loading**
 
-- Route-level code splitting using `React.lazy()` and `Suspense`
-- Pages are loaded on-demand rather than bundled together
-- Custom `LoadingSpinner` component provides visual feedback during async imports
+  - Used `React.lazy()` and `Suspense` for route-level code splitting
+  - Reduced initial bundle size and improved page load speed
+  - Added `LoadingSpinner` for smooth async transitions
 
-**Benefits:**
+- **React Memoization**
 
-- Reduced initial bundle size by splitting route components
-- Faster initial page load times
-- Better user experience with loading states during navigation
+  - `React.memo()`, `useMemo()`, and `useCallback()` prevent unnecessary re-renders
+  - Optimized heavy components like `UserDataTable` and `UserDrawer`
 
-**Files affected:**
+- **API Call Optimization**
 
-- `apps/web/src/App.tsx` - Implemented lazy loading with Suspense
-- `apps/web/src/pages/users/UserListPage.tsx` - Converted to default export
-- `apps/web/src/pages/users/UserDetailPage.tsx` - Converted to default export
-- `libs/ui/src/components/loading/Loading.tsx` - Created optimized loading components
+  - Centralized data fetching in `UserListPage`
+  - Reduced API calls from 6 → 2 (StrictMode included)
+  - Ensured single source of truth with Jotai atoms
 
-### 2. React Memoization
+- **Component Architecture Refactoring**
 
-**Implementation:**
+  - Moved `UserDrawer` state management to parent
+  - Eliminated redundant instances in toolbar and table rows
+  - Pure presentational components now receive state via props
 
-- `React.memo()` for expensive components (`UserDataTable`, `UserDrawer`)
-- `useMemo()` for computed values and expensive calculations
-- `useCallback()` for stable function references passed as props
+- **State Management Optimization**
+  - Avoided duplicate Jotai subscriptions
+  - Centralized UI state with custom hooks
+  - Reduced memory overhead and improved responsiveness
 
-**Benefits:**
+### Impact
 
-- Prevents unnecessary re-renders when props haven't changed
-- Improves rendering performance in data-heavy components
-- Reduces wasted computation cycles
-
-**Files affected:**
-
-- `apps/web/src/features/users/components/UserDataTable.tsx` - Memoized with prop comparison
-- `apps/web/src/features/users/components/UserDrawer.tsx` - Memoized for stable rendering
-
-### 3. API Call Optimization
-
-**Problem Solved:**
-
-- Originally had 6 redundant API calls on page load due to multiple `useUsers()` hooks
-- Each component was independently fetching the same user data
-
-**Solution:**
-
-- Centralized data fetching in `UserListPage`
-- Removed duplicate `useUsers()` calls from child components
-- Pass data and actions as props to maintain single source of truth
-
-**Impact:**
-
-- Reduced API calls from 6 to 2 (accounting for React.StrictMode double execution)
-- Eliminated redundant network requests
-- Improved data consistency across components
-
-### 4. Component Architecture Refactoring
-
-**Implementation:**
-
-- Moved `UserDrawer` state management to parent `UserDataTable`
-- Eliminated redundant `UserDrawer` instances in toolbar and table columns
-- Created pure presentational components that receive all state via props
-
-**Benefits:**
-
-- Cleaner component hierarchy with single responsibility
-- Reduced component coupling and improved reusability
-- Better performance through predictable data flow
-
-### 5. State Management Optimization
-
-**Implementation:**
-
-- Refactored `useUserActions` to accept operations as parameters
-- Avoided duplicate atom subscriptions across components
-- Centralized UI state management in `useUserManagement` hook
-
-**Benefits:**
-
-- Prevents unnecessary re-subscriptions to Jotai atoms
-- Reduces memory overhead from duplicate state listeners
-- Improves state update performance
-
-### Performance Impact Summary
-
-These optimizations resulted in:
-
-- **67% reduction** in initial API calls (6 → 2)
-- **Smaller initial bundle** through code splitting
-- **Faster re-renders** via memoization
-- **Cleaner architecture** following micro framework principles
-- **Better user experience** with loading states and responsive interactions
-
-The optimizations maintain the project's micro framework architecture while significantly improving performance and maintainability.
+- **67% fewer API calls**
+- Smaller initial bundle size
+- Faster re-renders and navigation
+- Cleaner, testable architecture
+- Better UX with loading feedback and responsive interactions
 
 ## State Management
 
@@ -198,6 +137,38 @@ This project follows WCAG 2.1 AA best practices:
 
 Tested with keyboard-only navigation, screen readers, and automated tools (axe/Lighthouse).
 
+## Testing
+
+This project uses **Vitest** and **React Testing Library** to ensure reliability and maintainability.
+
+### Test Coverage
+
+- **Unit Tests**
+
+  - Components: `DataTable`, `UserForm`, and other UI primitives
+  - Hooks: `useUsers` (mocking API services)
+  - Utilities: helper functions like `capitalize`
+
+- **Integration Tests**
+  - `UserDataTable`: verify search, filters, sorting, and pagination
+  - CRUD Workflow: Add, Edit, and Delete users with proper UI updates
+  - Accessibility: focus management, ARIA attributes, and keyboard navigation
+
+### Mocking API
+
+- **Mock Service Worker (MSW)** is used to simulate API responses for CRUD operations.
+- Ensures tests run consistently without depending on a live backend.
+
+### Running Tests
+
+```bash
+# Run all tests
+npm run test
+
+# Run with coverage
+npm run test:coverage
+```
+
 ## Commit Convention
 
 This repo follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
@@ -221,13 +192,13 @@ This project uses AI-assisted tools as part of the development process.
 ### Tools Involved
 
 - **GitHub Copilot**: Used for autocomplete suggestions and boilerplate generation.
-- **ChatGPT**: Used for architecture validation, code scaffolding, and problem-solving discussions.
+- **ChatGPT**: Used for architecture validation, code scaffolding, performance optimization, and problem-solving discussions.
+- **AI-Assisted Testing**: AI helped generate and refine **unit and integration tests** based on human-provided input and project requirements.
 
 ### Integration with Human Input
 
-All suggestions were reviewed, refactored, or rewritten to match project goals and architectural decisions. More detailed documentation on AI usage — including examples, customizations, and trade-offs — will be added at the end of the project.
-
-> 📝 Full AI usage documentation will be completed before the final delivery.
+All AI-generated suggestions were **reviewed, validated, and customized** to align with the project's goals, coding standards, and micro framework architecture.
+Tests were written with **AI assistance guided by human-defined scenarios and expected behaviors**, ensuring accuracy and relevance.
 
 ## License
 
