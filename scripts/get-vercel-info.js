@@ -3,7 +3,7 @@
 /**
  * Helper script to get Vercel project information
  * Run: node scripts/get-vercel-info.js
- * 
+ *
  * You'll need to:
  * 1. Install Vercel CLI: npm install -g vercel
  * 2. Login to Vercel: vercel login
@@ -15,14 +15,14 @@ const path = require('path');
 
 try {
   console.log('🔍 Getting Vercel project information...\n');
-  
+
   // Check if .vercel directory exists
   const vercelDir = path.join(process.cwd(), '.vercel');
   const projectJsonPath = path.join(vercelDir, 'project.json');
-  
+
   if (fs.existsSync(projectJsonPath)) {
     const projectInfo = JSON.parse(fs.readFileSync(projectJsonPath, 'utf8'));
-    
+
     console.log('📋 Found Vercel project configuration:');
     console.log('─'.repeat(50));
     console.log(`VERCEL_PROJECT_ID: ${projectInfo.projectId}`);

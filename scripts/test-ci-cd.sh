@@ -16,10 +16,10 @@ NC='\033[0m' # No Color
 run_test() {
     local test_name="$1"
     local command="$2"
-    
+
     echo -e "\n${YELLOW}🔍 Testing: $test_name${NC}"
     echo "Command: $command"
-    
+
     if eval "$command" > /dev/null 2>&1; then
         echo -e "${GREEN}✅ PASSED: $test_name${NC}"
         return 0
