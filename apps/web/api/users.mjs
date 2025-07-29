@@ -1,19 +1,7 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
 import { Redis } from '@upstash/redis';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: string;
-  team: string;
-  avatar: string;
-  createdAt: string;
-}
-
 // Default data for initialization
-const defaultUsers: User[] = [
+const defaultUsers = [
   {
     id: 1,
     name: 'John Doe',
@@ -40,22 +28,19 @@ const defaultUsers: User[] = [
 const getRedisClient = () => {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-
+  
   console.log('Redis config check:', {
     hasUrl: !!url,
     hasToken: !!token,
     urlLength: url?.length || 0,
-    tokenLength: token?.length || 0,
+    tokenLength: token?.length || 0
   });
-
+  
   if (!url || !token) {
-    console.error('Missing Redis environment variables:', {
-      url: !!url,
-      token: !!token,
-    });
+    console.error('Missing Redis environment variables:', { url: !!url, token: !!token });
     return null;
   }
-
+  
   return new Redis({ url, token });
 };
 
@@ -63,16 +48,16 @@ const redis = getRedisClient();
 
 // Storage abstraction using Upstash Redis
 class UserStorage {
-  private static USERS_KEY = 'users';
+  static USERS_KEY = 'users';
 
-  static async getAll(): Promise<User[]> {
+  static async getAll() {
     try {
       if (!redis) {
         console.log('Redis not available, using default data');
         return [...defaultUsers];
       }
-
-      const users = await redis.get<User[]>(this.USERS_KEY);
+      
+      const users = await redis.get(this.USERS_KEY);
       if (!users || users.length === 0) {
         // Initialize with default data if Redis is empty
         await this.save(defaultUsers);
@@ -86,13 +71,13 @@ class UserStorage {
     }
   }
 
-  static async save(users: User[]): Promise<void> {
+  static async save(users) {
     try {
       if (!redis) {
         console.log('Redis not available, skipping save');
         return;
       }
-
+      
       await redis.set(this.USERS_KEY, users);
       console.log('Successfully saved users to Redis');
     } catch (error) {
@@ -101,7 +86,7 @@ class UserStorage {
     }
   }
 
-  static async getNextId(): Promise<number> {
+  static async getNextId() {
     try {
       const users = await this.getAll();
       return users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
@@ -112,20 +97,17 @@ class UserStorage {
   }
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req, res) {
   console.log(`API Request: ${req.method} ${req.url}`);
   console.log('Environment check:', {
     NODE_ENV: process.env.NODE_ENV,
     hasRedisUrl: !!process.env.UPSTASH_REDIS_REST_URL,
     hasRedisToken: !!process.env.UPSTASH_REDIS_REST_TOKEN,
   });
-
+  
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE, OPTIONS'
-  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -141,7 +123,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       case 'POST': {
         const users = await UserStorage.getAll();
-        const newUser: User = {
+        const newUser = {
           id: await UserStorage.getNextId(),
           name: req.body.name,
           email: req.body.email,
@@ -159,7 +141,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       case 'PUT': {
         const { id } = req.query;
         const users = await UserStorage.getAll();
-        const userIndex = users.findIndex(u => u.id === parseInt(id as string));
+        const userIndex = users.findIndex(u => u.id === parseInt(id));
         if (userIndex === -1) {
           return res.status(404).json({ error: 'User not found' });
         }
@@ -171,9 +153,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       case 'DELETE': {
         const deleteId = req.query.id;
         const users = await UserStorage.getAll();
-        const deleteIndex = users.findIndex(
-          u => u.id === parseInt(deleteId as string)
-        );
+        const deleteIndex = users.findIndex(u => u.id === parseInt(deleteId));
         if (deleteIndex === -1) {
           return res.status(404).json({ error: 'User not found' });
         }
@@ -184,9 +164,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       default:
         res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']);
-        return res
-          .status(405)
-          .json({ error: `Method ${req.method} not allowed` });
+        return res.status(405).json({ error: `Method ${req.method} not allowed` });
     }
   } catch (error) {
     console.error('API Error:', error);
@@ -194,9 +172,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
     });
-    return res.status(500).json({
+    return res.status(500).json({ 
       error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 }
