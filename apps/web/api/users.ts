@@ -1,5 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import usersData from '@mocks/api/db.json';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 interface User {
   id: number;
@@ -12,7 +13,10 @@ interface User {
   createdAt: string;
 }
 
-const users: User[] = [...usersData.users];
+// Load users data at startup
+const dbPath = join(process.cwd(), 'mocks', 'api', 'db.json');
+const usersData = JSON.parse(readFileSync(dbPath, 'utf8'));
+const users: User[] = [...(usersData.users as User[])];
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   // Set CORS headers
