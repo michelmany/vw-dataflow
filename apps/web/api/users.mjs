@@ -1,28 +1,48 @@
 import { Redis } from '@upstash/redis';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-// Default data for initialization
-const defaultUsers = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'admin',
-    status: 'active',
-    team: 'engineering',
-    avatar: 'https://i.pravatar.cc/150?u=john@example.com',
-    createdAt: '2024-01-01T00:00:00Z',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    role: 'user',
-    status: 'active',
-    team: 'marketing',
-    avatar: 'https://i.pravatar.cc/150?u=jane@example.com',
-    createdAt: '2024-01-02T00:00:00Z',
-  },
-];
+// Get current directory for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load default users from db.json
+const loadDefaultUsers = () => {
+  try {
+    const dbPath = join(__dirname, 'db.json');
+    const dbContent = readFileSync(dbPath, 'utf8');
+    const db = JSON.parse(dbContent);
+    return db.users || [];
+  } catch (error) {
+    console.error('Error loading db.json:', error);
+    // Fallback to hardcoded users if db.json fails to load
+    return [
+      {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: 'admin',
+        status: 'active',
+        team: 'engineering',
+        avatar: 'https://i.pravatar.cc/150?u=john@example.com',
+        createdAt: '2024-01-01T00:00:00Z',
+      },
+      {
+        id: 2,
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        role: 'user',
+        status: 'active',
+        team: 'marketing',
+        avatar: 'https://i.pravatar.cc/150?u=jane@example.com',
+        createdAt: '2024-01-02T00:00:00Z',
+      },
+    ];
+  }
+};
+
+const defaultUsers = loadDefaultUsers();
 
 // Initialize Redis connection with validation
 const getRedisClient = () => {
