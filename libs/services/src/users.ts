@@ -22,7 +22,13 @@ const BASE_URL = `${getApiUrl()}/users`;
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(errorText || 'API request failed');
+    console.error('API Error Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      url: response.url,
+      errorText
+    });
+    throw new Error(errorText || `API request failed with status ${response.status}`);
   }
   return response.json();
 }
