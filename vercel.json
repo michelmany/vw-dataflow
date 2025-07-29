@@ -6,7 +6,7 @@
   "framework": "vite",
   "functions": {
     "apps/web/api/users.ts": {
-      "runtime": "@vercel/node@3.0.23"
+      "runtime": "@vercel/node@3.2.29"
     }
   },
   "headers": [

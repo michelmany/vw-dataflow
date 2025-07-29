@@ -16,23 +16,23 @@ interface User {
 const defaultUsers: User[] = [
   {
     id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "admin",
-    status: "active",
-    team: "engineering",
-    avatar: "https://i.pravatar.cc/150?u=john@example.com",
-    createdAt: "2024-01-01T00:00:00Z",
+    name: 'John Doe',
+    email: 'john@example.com',
+    role: 'admin',
+    status: 'active',
+    team: 'engineering',
+    avatar: 'https://i.pravatar.cc/150?u=john@example.com',
+    createdAt: '2024-01-01T00:00:00Z',
   },
   {
     id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "user",
-    status: "active",
-    team: "marketing",
-    avatar: "https://i.pravatar.cc/150?u=jane@example.com",
-    createdAt: "2024-01-02T00:00:00Z",
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    role: 'user',
+    status: 'active',
+    team: 'marketing',
+    avatar: 'https://i.pravatar.cc/150?u=jane@example.com',
+    createdAt: '2024-01-02T00:00:00Z',
   },
 ];
 
@@ -40,19 +40,22 @@ const defaultUsers: User[] = [
 const getRedisClient = () => {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  
+
   console.log('Redis config check:', {
     hasUrl: !!url,
     hasToken: !!token,
     urlLength: url?.length || 0,
-    tokenLength: token?.length || 0
+    tokenLength: token?.length || 0,
   });
-  
+
   if (!url || !token) {
-    console.error('Missing Redis environment variables:', { url: !!url, token: !!token });
+    console.error('Missing Redis environment variables:', {
+      url: !!url,
+      token: !!token,
+    });
     return null;
   }
-  
+
   return new Redis({ url, token });
 };
 
@@ -68,7 +71,7 @@ class UserStorage {
         console.log('Redis not available, using default data');
         return [...defaultUsers];
       }
-      
+
       const users = await redis.get<User[]>(this.USERS_KEY);
       if (!users || users.length === 0) {
         // Initialize with default data if Redis is empty
@@ -89,7 +92,7 @@ class UserStorage {
         console.log('Redis not available, skipping save');
         return;
       }
-      
+
       await redis.set(this.USERS_KEY, users);
       console.log('Successfully saved users to Redis');
     } catch (error) {
@@ -116,10 +119,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     hasRedisUrl: !!process.env.UPSTASH_REDIS_REST_URL,
     hasRedisToken: !!process.env.UPSTASH_REDIS_REST_TOKEN,
   });
-  
+
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, OPTIONS'
+  );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -165,7 +171,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       case 'DELETE': {
         const deleteId = req.query.id;
         const users = await UserStorage.getAll();
-        const deleteIndex = users.findIndex(u => u.id === parseInt(deleteId as string));
+        const deleteIndex = users.findIndex(
+          u => u.id === parseInt(deleteId as string)
+        );
         if (deleteIndex === -1) {
           return res.status(404).json({ error: 'User not found' });
         }
@@ -176,7 +184,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       default:
         res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']);
-        return res.status(405).json({ error: `Method ${req.method} not allowed` });
+        return res
+          .status(405)
+          .json({ error: `Method ${req.method} not allowed` });
     }
   } catch (error) {
     console.error('API Error:', error);
@@ -184,9 +194,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
     });
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 }
