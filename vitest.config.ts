@@ -10,9 +10,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     css: true,
-    typecheck: {
-      tsconfig: './vitest.tsconfig.json',
-    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -38,5 +35,8 @@ export default defineConfig({
       '@test-utils': resolve(__dirname, './libs/test-utils/src'),
       '@mocks': resolve(__dirname, './libs/mocks/src'),
     },
+  },
+  define: {
+    'import.meta.vitest': undefined,
   },
 });

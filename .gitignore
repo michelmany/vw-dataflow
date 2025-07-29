@@ -26,6 +26,9 @@ coverage/
 **/api/*.js
 **/api/*.js.map
 
+# Generated config files
+vitest.config.js
+
 # Env
 .env
 .env.*.local
