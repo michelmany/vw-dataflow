@@ -219,6 +219,95 @@ In addition, if time permits, I plan to extend **JSON Server** to handle **serve
 
 This **dual approach** demonstrates awareness of scalability trade-offs and the ability to adapt the solution to different contexts.
 
+## Reusable Components
+
+This project follows a micro-framework architecture with a dedicated `libs/ui` library for shared UI primitives. These components ensure consistency, accessibility, and reusability across all features.
+
+### 1. Button
+
+**Location:** `libs/ui/src/components/button`
+
+**Props:**
+
+- `variant: "primary" | "secondary" | "ghost" | "destructive"`
+- `size: "sm" | "md" | "lg"`
+- `disabled: boolean`
+- `onClick: () => void`
+
+**Usage:**
+Used across toolbars, dropdowns, drawers, and dialogs. Provides consistent styling, focus states, and accessibility.
+
+**Trade-offs:**
+Variants must be extended carefully to avoid visual inconsistency.
+
+---
+
+### 2. Drawer
+
+**Location:** `libs/ui/src/components/drawer`
+
+**Props:**
+
+- `open: boolean`
+- `onOpenChange: (open: boolean) => void`
+- `direction: "left" | "right" | "top" | "bottom"`
+- `children: React.ReactNode`
+
+**Usage:**
+Used for Add/Edit User forms and Showcase views. Automatically adapts between mobile (bottom) and desktop (side) layouts.
+
+**Trade-offs:**
+Content-heavy drawers should manage scrolling internally to avoid layout shifts.
+
+---
+
+### 3. Dialog
+
+**Location:** `libs/ui/src/components/dialog`
+
+**Props:**
+
+- `open: boolean`
+- `onOpenChange: (open: boolean) => void`
+- `title: string`
+- `description?: string`
+- `onConfirm?: () => void`
+
+**Usage:**
+Used for Delete confirmation and other critical actions. Ensures focus trapping and keyboard navigation.
+
+**Trade-offs:**
+Keep dialogs short and actionable to avoid overwhelming the user.
+
+---
+
+### 4. Input + Label
+
+**Location:** `libs/ui/src/components/input`
+
+**Props:**
+
+- `id: string`
+- `value: string`
+- `onChange: (value: string) => void`
+- `placeholder?: string`
+- `label?: string`
+
+**Usage:**
+Standardized form inputs with accessible `<label>` pairing. Used in UserForm.
+
+**Trade-offs:**
+Validation messages should be added per feature to remain context-specific.
+
+---
+
+### Benefits of Extraction
+
+- ✅ Consistent UI across the application
+- ✅ Easier maintenance and updates
+- ✅ Improved accessibility via shared patterns
+- ✅ Reduces code duplication and ensures micro-framework principles
+
 ## Accessibility
 
 This project follows WCAG 2.1 AA best practices:
