@@ -113,7 +113,7 @@ export function UserForm({ initialData, onSubmit }: UserFormProps) {
             </SelectContent>
           </Select>
           <span id={`${filter.columnKey}-description`} className="sr-only">
-            Choose the user's {filter.label.toLowerCase()}
+            Choose the user&apos;s {filter.label.toLowerCase()}
           </span>
         </div>
       ))}

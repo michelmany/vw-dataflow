@@ -51,6 +51,49 @@ project-root/
 - Custom hooks and utilities are colocated in `libs/hooks` and `libs/utils`
 - Services for API calls and data management are in `libs/services`
 
+## Running the Application
+
+### Local Development
+
+Start the development server with hot reload:
+
+```bash
+npm run dev
+```
+
+This launches the frontend app on `http://localhost:5173` and runs the mock backend (JSON Server).
+
+### Build & Production
+
+```bash
+npm run build     # Creates a production build
+npm run preview   # Previews the production build locally
+```
+
+### Code Quality
+
+```bash
+npm run lint       # Run ESLint checks
+npm run lint:fix   # Auto-fix lint issues
+```
+
+### Testing
+
+```bash
+npm run test:run       # Run the full test suite once
+npm run test           # Run tests in watch mode
+npm run test:coverage  # Run tests with coverage report
+```
+
+### Workspaces
+
+This project uses a monorepo setup with workspaces. To run commands in a specific workspace:
+
+```bash
+npm run dev --workspace=apps/web
+npm run build --workspace=@libs/ui
+```
+
 ## Performance Optimizations
 
 This project implements key performance improvements for speed and scalability.
@@ -167,6 +210,46 @@ npm run test
 
 # Run with coverage
 npm run test:coverage
+```
+
+## CI/CD Pipeline
+
+This project uses **GitHub Actions** for CI/CD with automatic deployment to **Vercel**.
+
+### Continuous Integration
+
+On every push and pull request:
+
+- ✅ **Lint Checking** (ESLint with TypeScript & React)
+- ✅ **Testing** (Vitest + React Testing Library)
+- ✅ **Build Verification** (ensures production build succeeds)
+- ✅ **Coverage Reports**
+
+### Continuous Deployment
+
+- **Production**: Auto-deploy to Vercel on push to `main`
+- **Preview**: PRs create preview deployments with shareable URLs
+
+### Setup
+
+Add these GitHub repository secrets:
+
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+
+### Features
+
+- ✅ Automated tests & linting on every commit
+- ✅ Zero-downtime deployments
+- ✅ Preview links for PRs
+- ✅ Caching for faster builds
+
+```bash
+npm run lint         # Run lint checks
+npm run test         # Run test suite
+npm run test:coverage # Run tests with coverage
+npm run build        # Build production app
 ```
 
 ## Commit Convention
