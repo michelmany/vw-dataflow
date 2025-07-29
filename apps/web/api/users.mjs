@@ -48,19 +48,22 @@ const defaultUsers = loadDefaultUsers();
 const getRedisClient = () => {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  
+
   console.log('Redis config check:', {
     hasUrl: !!url,
     hasToken: !!token,
     urlLength: url?.length || 0,
-    tokenLength: token?.length || 0
+    tokenLength: token?.length || 0,
   });
-  
+
   if (!url || !token) {
-    console.error('Missing Redis environment variables:', { url: !!url, token: !!token });
+    console.error('Missing Redis environment variables:', {
+      url: !!url,
+      token: !!token,
+    });
     return null;
   }
-  
+
   return new Redis({ url, token });
 };
 
@@ -76,10 +79,11 @@ class UserStorage {
         console.log('Redis not available, using default data');
         return [...defaultUsers];
       }
-      
+
       const users = await redis.get(this.USERS_KEY);
       if (!users || users.length === 0) {
         // Initialize with default data if Redis is empty
+        console.log('Initializing Redis with default users from db.json');
         await this.save(defaultUsers);
         return [...defaultUsers];
       }
@@ -97,12 +101,29 @@ class UserStorage {
         console.log('Redis not available, skipping save');
         return;
       }
-      
+
       await redis.set(this.USERS_KEY, users);
       console.log('Successfully saved users to Redis');
     } catch (error) {
       console.error('Error saving users to Redis:', error);
       // Don't throw error, just log it
+    }
+  }
+
+  static async resetToDefault() {
+    try {
+      if (!redis) {
+        console.log('Redis not available, cannot reset');
+        return false;
+      }
+      
+      console.log(`Resetting Redis with ${defaultUsers.length} users from db.json`);
+      await redis.set(this.USERS_KEY, defaultUsers);
+      console.log('Successfully reset Redis to default data');
+      return true;
+    } catch (error) {
+      console.error('Error resetting Redis:', error);
+      return false;
     }
   }
 
@@ -124,10 +145,13 @@ export default async function handler(req, res) {
     hasRedisUrl: !!process.env.UPSTASH_REDIS_REST_URL,
     hasRedisToken: !!process.env.UPSTASH_REDIS_REST_TOKEN,
   });
-  
+
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+  );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -135,10 +159,38 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Special reset endpoint - you can call /api/users/reset with POST method
+    if (req.method === 'POST' && req.query.action === 'reset') {
+      const success = await UserStorage.resetToDefault();
+      if (success) {
+        const users = await UserStorage.getAll();
+        return res.status(200).json({
+          message: 'Database reset successfully',
+          count: users.length,
+          users: users
+        });
+      } else {
+        return res.status(500).json({ error: 'Failed to reset database' });
+      }
+    }
+
     switch (req.method) {
       case 'GET': {
-        const users = await UserStorage.getAll();
-        return res.status(200).json(users);
+        // Handle both /users and /users/:id
+        const { id } = req.query;
+        if (id) {
+          // Get single user by ID
+          const users = await UserStorage.getAll();
+          const user = users.find(u => u.id === parseInt(id));
+          if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+          }
+          return res.status(200).json(user);
+        } else {
+          // Get all users
+          const users = await UserStorage.getAll();
+          return res.status(200).json(users);
+        }
       }
 
       case 'POST': {
@@ -158,8 +210,12 @@ export default async function handler(req, res) {
         return res.status(201).json(newUser);
       }
 
-      case 'PUT': {
+      case 'PUT':
+      case 'PATCH': {
         const { id } = req.query;
+        if (!id) {
+          return res.status(400).json({ error: 'User ID is required' });
+        }
         const users = await UserStorage.getAll();
         const userIndex = users.findIndex(u => u.id === parseInt(id));
         if (userIndex === -1) {
@@ -171,9 +227,12 @@ export default async function handler(req, res) {
       }
 
       case 'DELETE': {
-        const deleteId = req.query.id;
+        const { id } = req.query;
+        if (!id) {
+          return res.status(400).json({ error: 'User ID is required' });
+        }
         const users = await UserStorage.getAll();
-        const deleteIndex = users.findIndex(u => u.id === parseInt(deleteId));
+        const deleteIndex = users.findIndex(u => u.id === parseInt(id));
         if (deleteIndex === -1) {
           return res.status(404).json({ error: 'User not found' });
         }
@@ -183,8 +242,10 @@ export default async function handler(req, res) {
       }
 
       default:
-        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']);
-        return res.status(405).json({ error: `Method ${req.method} not allowed` });
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']);
+        return res
+          .status(405)
+          .json({ error: `Method ${req.method} not allowed` });
     }
   } catch (error) {
     console.error('API Error:', error);
@@ -192,9 +253,9 @@ export default async function handler(req, res) {
       message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
     });
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Internal server error',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 }
