@@ -1,0 +1,9 @@
+dist/
+build/
+coverage/
+node_modules/
+*.config.js
+*.config.cjs
+*.config.mjs
+.next/
+out/

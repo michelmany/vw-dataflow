@@ -1,0 +1,17 @@
+node_modules
+.git
+*.log
+coverage
+.vitest
+.vite
+**/__tests__
+**/*.test.*
+**/*.spec.*
+.github
+.eslintrc*
+eslint.config.*
+vitest.config.*
+vitest.setup.*
+vitest-global.d.ts
+test-utils
+.DS_Store

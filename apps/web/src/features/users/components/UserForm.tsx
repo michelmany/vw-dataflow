@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@libs/ui';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { userFilters } from '../table/userFilters';
 
 interface UserFormProps {
@@ -19,6 +19,11 @@ interface UserFormProps {
 
 export function UserForm({ initialData, onSubmit }: UserFormProps) {
   const [formData, setFormData] = useState<Partial<User>>(initialData || {});
+
+  // Update form data when initialData changes
+  useEffect(() => {
+    setFormData(initialData || {});
+  }, [initialData]);
 
   const handleChange = (key: keyof User, value: string) => {
     setFormData({ ...formData, [key]: value });

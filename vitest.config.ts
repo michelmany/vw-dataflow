@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -32,6 +32,8 @@ export default defineConfig({
       '@libs/types': resolve(__dirname, './libs/types/src'),
       '@libs/services': resolve(__dirname, './libs/services/src'),
       '@libs/utils': resolve(__dirname, './libs/utils/src'),
+      '@test-utils': resolve(__dirname, './libs/test-utils/src'),
+      '@mocks': resolve(__dirname, './libs/mocks/src'),
     },
   },
-})
+});
