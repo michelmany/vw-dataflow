@@ -23,18 +23,18 @@ export function UserDataTableToolbar<TData>({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <div className="flex flex-1 items-center gap-2">
+      <div className="flex flex-col sm:flex-row flex-1 items-stretch sm:items-center gap-2">
         <Input
           id="search"
           placeholder="Search users..."
           value={table.getState().globalFilter ?? ''}
           onChange={event => table.setGlobalFilter(event.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-8 w-full sm:w-[150px] lg:w-[250px]"
           aria-label="Search users by name, email, or other attributes"
         />
 
         <div
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 w-full sm:w-auto"
           role="group"
           aria-label="Filter controls"
         >

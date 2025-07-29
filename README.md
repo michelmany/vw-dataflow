@@ -55,9 +55,9 @@ The project follows a **dual-environment API strategy** that works seamlessly in
 
 ### Production Environment (Vercel)
 
-- Uses **Vercel Serverless Functions** in the `/api` directory
-- API routes read from the same `mocks/api/db.json` file
-- Maintains data consistency between environments
+- Uses **Vercel Serverless Functions** with **Upstash Redis** for persistent storage
+- API routes built as ES modules (`.mjs`) for compatibility
+- Maintains data consistency and provides CRUD operations
 - Automatic deployment with CI/CD pipeline
 
 ### Environment Configuration
@@ -89,8 +89,8 @@ DELETE /api/users/:id   # Delete user
 The API follows the project's micro framework principles:
 
 - **Service Layer** (`libs/services/users.ts`): Environment-aware API client
-- **Mock Data** (`mocks/api/db.json`): Shared data source for all environments
-- **Serverless Functions** (`api/users.ts`): Production API handlers
+- **Production Storage** (Upstash Redis): Persistent data storage for production
+- **Serverless Functions** (`api/users.mjs`): Production API handlers as ES modules
 - **Local Server** (`mocks/api/server.js`): Development JSON Server
 
 ## Architecture Principles

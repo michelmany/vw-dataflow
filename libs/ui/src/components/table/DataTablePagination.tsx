@@ -17,15 +17,22 @@ export function DataTablePagination<TData>({
 
   return (
     <nav
-      className="flex items-center justify-between px-2 py-2"
+      className="flex flex-col sm:flex-row items-center justify-between px-2 py-2 space-y-2 sm:space-y-0"
       role="navigation"
       aria-label="Table pagination"
     >
-      <div className="text-sm text-muted-foreground" aria-live="polite">
+      <div
+        className="text-sm text-muted-foreground w-full sm:w-auto text-center sm:text-left"
+        aria-live="polite"
+      >
         Showing {startRow} to {endRow} of {totalRows} results (Page{' '}
         {currentPage} of {totalPages})
       </div>
-      <div className="space-x-2" role="group" aria-label="Pagination controls">
+      <div
+        className="space-x-2 w-full sm:w-auto flex justify-center sm:justify-end"
+        role="group"
+        aria-label="Pagination controls"
+      >
         <Button
           variant="outline"
           size="sm"
