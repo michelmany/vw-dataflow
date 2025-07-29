@@ -8,6 +8,9 @@ coverage
 **/*.test.*
 **/*.spec.*
 .github
+dist/api/
+apps/web/dist/api/
+*.js.map
 .eslintrc*
 eslint.config.*
 vitest.config.*
