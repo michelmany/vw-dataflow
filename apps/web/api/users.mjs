@@ -116,8 +116,10 @@ class UserStorage {
         console.log('Redis not available, cannot reset');
         return false;
       }
-      
-      console.log(`Resetting Redis with ${defaultUsers.length} users from db.json`);
+
+      console.log(
+        `Resetting Redis with ${defaultUsers.length} users from db.json`
+      );
       await redis.set(this.USERS_KEY, defaultUsers);
       console.log('Successfully reset Redis to default data');
       return true;
@@ -167,7 +169,7 @@ export default async function handler(req, res) {
         return res.status(200).json({
           message: 'Database reset successfully',
           count: users.length,
-          users: users
+          users: users,
         });
       } else {
         return res.status(500).json({ error: 'Failed to reset database' });
@@ -242,7 +244,14 @@ export default async function handler(req, res) {
       }
 
       default:
-        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']);
+        res.setHeader('Allow', [
+          'GET',
+          'POST',
+          'PUT',
+          'PATCH',
+          'DELETE',
+          'OPTIONS',
+        ]);
         return res
           .status(405)
           .json({ error: `Method ${req.method} not allowed` });

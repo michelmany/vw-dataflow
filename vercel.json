@@ -30,7 +30,11 @@
   ],
   "rewrites": [
     {
-      "source": "/api/users/(.*)",
+      "source": "/api/users/reset",
+      "destination": "/apps/web/api/users.mjs?action=reset"
+    },
+    {
+      "source": "/api/users/([0-9]+)",
       "destination": "/apps/web/api/users.mjs?id=$1"
     },
     {
