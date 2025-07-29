@@ -42,6 +42,57 @@ project-root/
 - **JSON Server** for mocking RESTful API endpoints
 - **Jotai** for global state management
 
+## API Architecture
+
+The project follows a **dual-environment API strategy** that works seamlessly in both development and production:
+
+### Development Environment
+
+- Uses **JSON Server** running on `http://localhost:3001`
+- Mock data is defined in `mocks/api/db.json`
+- Full CRUD operations with automatic ID generation
+- Started automatically with `npm run dev`
+
+### Production Environment (Vercel)
+
+- Uses **Vercel Serverless Functions** in the `/api` directory
+- API routes read from the same `mocks/api/db.json` file
+- Maintains data consistency between environments
+- Automatic deployment with CI/CD pipeline
+
+### Environment Configuration
+
+Environment variables control API URLs:
+
+```bash
+# .env.local (development)
+VITE_API_URL=http://localhost:3001/api
+
+# Production (automatically set by Vercel)
+VITE_API_URL=/api
+```
+
+### API Endpoints
+
+All environments support the same REST API:
+
+```typescript
+GET    /api/users       # Get all users
+GET    /api/users/:id   # Get user by ID
+POST   /api/users       # Create new user
+PATCH  /api/users/:id   # Update user
+DELETE /api/users/:id   # Delete user
+```
+
+### Micro Framework API Structure
+
+The API follows the project's micro framework principles:
+
+- **Service Layer** (`libs/services/users.ts`): Environment-aware API client
+- **Mock Data** (`mocks/api/db.json`): Shared data source for all environments
+- **Serverless Functions** (`api/users.ts`): Production API handlers
+- **Local Server** (`mocks/api/server.js`): Development JSON Server
+
 ## Architecture Principles
 
 - Micro-framework layout: separate UI, logic, and services into reusable libraries
@@ -220,10 +271,10 @@ This project uses **GitHub Actions** for CI/CD with automatic deployment to **Ve
 
 On every push and pull request:
 
-- ✅ **Lint Checking** (ESLint with TypeScript & React)
-- ✅ **Testing** (Vitest + React Testing Library)
-- ✅ **Build Verification** (ensures production build succeeds)
-- ✅ **Coverage Reports**
+- **Lint Checking** (ESLint with TypeScript & React)
+- **Testing** (Vitest + React Testing Library)
+- **Build Verification** (ensures production build succeeds)
+- **Coverage Reports**
 
 ### Continuous Deployment
 
@@ -240,10 +291,10 @@ Add these GitHub repository secrets:
 
 ### Features
 
-- ✅ Automated tests & linting on every commit
-- ✅ Zero-downtime deployments
-- ✅ Preview links for PRs
-- ✅ Caching for faster builds
+- Automated tests & linting on every commit
+- Zero-downtime deployments
+- Preview links for PRs
+- Caching for faster builds
 
 ```bash
 npm run lint         # Run lint checks

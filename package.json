@@ -17,7 +17,9 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "test:api": "node scripts/test-api.js",
+    "test:vercel": "node scripts/test-vercel-api.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
@@ -27,6 +29,7 @@
     "@types/node": "^24.1.0",
     "@types/react": "^18.2.x",
     "@types/react-dom": "^18.2.x",
+    "@vercel/node": "^5.3.7",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
     "concurrently": "^8.2.2",

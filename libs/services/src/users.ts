@@ -1,6 +1,17 @@
 import { User } from '@libs/types';
 
-const BASE_URL = 'http://localhost:3001/api/users';
+// Use environment-aware API URL with fallback logic
+const getApiUrl = (): string => {
+  // In development, use environment variable if available, otherwise fallback to localhost
+  if (import.meta.env.DEV) {
+    return import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+  }
+
+  // In production, use relative path to Vercel API routes
+  return '/api';
+};
+
+const BASE_URL = `${getApiUrl()}/users`;
 
 /**
  * Handles the response from a fetch call, throwing an error if the request failed.
