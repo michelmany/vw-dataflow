@@ -16,8 +16,8 @@
       "@mocks": ["../../libs/mocks/src"]
     }
   },
-  "include": ["src", "api"],
-  "exclude": ["src/**/*.test.*", "src/**/*.spec.*", "src/**/__tests__/**/*"],
+  "include": ["src"],
+  "exclude": ["src/**/*.test.*", "src/**/*.spec.*", "src/**/__tests__/**/*", "api"],
   "references": [
     {
       "path": "../../libs/types"
