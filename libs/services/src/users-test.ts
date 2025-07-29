@@ -26,11 +26,9 @@ async function handleResponse<T>(response: Response): Promise<T> {
       status: response.status,
       statusText: response.statusText,
       url: response.url,
-      errorText,
+      errorText
     });
-    throw new Error(
-      errorText || `API request failed with status ${response.status}`
-    );
+    throw new Error(errorText || `API request failed with status ${response.status}`);
   }
   return response.json();
 }
@@ -52,14 +50,12 @@ export async function getUsers(): Promise<User[]> {
 }
 
 /**
- * Fetch a single user by ID.
+ * Fetch a single user by ID using query parameter.
  * @param id - The user's ID
  * @returns Promise resolving to the User object
  */
 export async function getUserById(id: number): Promise<User> {
-  // Use RESTful path for development (JSON Server), query param for production (Vercel)
-  const url = import.meta.env.DEV ? `${BASE_URL}/${id}` : `${BASE_URL}?id=${id}`;
-  const response = await fetch(url);
+  const response = await fetch(`${BASE_URL}?id=${id}`);
   return handleResponse<User>(response);
 }
 
@@ -78,7 +74,7 @@ export async function createUser(user: Partial<User>): Promise<User> {
 }
 
 /**
- * Update an existing user by ID.
+ * Update an existing user by ID using query parameter.
  * @param id - The user's ID
  * @param updates - Partial User data to update
  * @returns Promise resolving to the updated User
@@ -87,9 +83,7 @@ export async function updateUser(
   id: number,
   updates: Partial<User>
 ): Promise<User> {
-  // Use RESTful path for development (JSON Server), query param for production (Vercel)
-  const url = import.meta.env.DEV ? `${BASE_URL}/${id}` : `${BASE_URL}?id=${id}`;
-  const response = await fetch(url, {
+  const response = await fetch(`${BASE_URL}?id=${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updates),
@@ -98,14 +92,12 @@ export async function updateUser(
 }
 
 /**
- * Delete a user by ID.
+ * Delete a user by ID using query parameter.
  * @param id - The user's ID
  * @returns Promise resolving to the deleted User
  */
 export async function deleteUser(id: number): Promise<User> {
-  // Use RESTful path for development (JSON Server), query param for production (Vercel)
-  const url = import.meta.env.DEV ? `${BASE_URL}/${id}` : `${BASE_URL}?id=${id}`;
-  const response = await fetch(url, {
+  const response = await fetch(`${BASE_URL}?id=${id}`, {
     method: 'DELETE',
   });
   return handleResponse<User>(response);
