@@ -6,5 +6,7 @@
     "tsBuildInfoFile": "tsconfig.tsbuildinfo"
   },
   "include": ["src"],
-  "references": []
+  "references": [
+    { "path": "../types" }
+  ]
 }

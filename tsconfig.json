@@ -22,15 +22,19 @@
       "@libs/hooks": ["libs/hooks/src"],
       "@libs/utils": ["libs/utils/src"],
       "@libs/services": ["libs/services/src"],
-      "@libs/types": ["libs/types/src"]
+      "@libs/types": ["libs/types/src"],
+      "@test-utils": ["libs/test-utils/src"],
+      "@mocks": ["libs/mocks/src"]
     }
   },
+  "files": [],
+  "include": [],
   "references": [
+    { "path": "./libs/types" },
+    { "path": "./libs/utils" },
     { "path": "./libs/ui" },
     { "path": "./libs/hooks" },
-    { "path": "./libs/utils" },
     { "path": "./libs/services" },
-    { "path": "./libs/types" },
     { "path": "./apps/web" }
   ]
 }

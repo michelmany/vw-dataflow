@@ -5,7 +5,7 @@
   "installCommand": "npm install",
   "framework": "vite",
   "functions": {
-    "api/users.ts": {
+    "apps/web/api/users.ts": {
       "runtime": "@vercel/node@3.0.23"
     }
   },
@@ -31,7 +31,11 @@
   "rewrites": [
     {
       "source": "/api/users/(.*)",
-      "destination": "/api/users?id=$1"
+      "destination": "/apps/web/api/users?id=$1"
+    },
+    {
+      "source": "/api/users",
+      "destination": "/apps/web/api/users"
     },
     {
       "source": "/(.*)",

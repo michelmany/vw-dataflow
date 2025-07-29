@@ -19,6 +19,7 @@
     "esModuleInterop": true
   },
   "include": ["src"],
+  "exclude": ["src/**/*.test.*", "src/**/__tests__/**"],
   "references": [
     {
       "path": "../../libs/types"

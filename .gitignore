@@ -22,6 +22,10 @@ coverage/
 *.tsbuildinfo
 **/*.tsbuildinfo
 
+# Generated JavaScript from TypeScript API routes
+**/api/*.js
+**/api/*.js.map
+
 # Env
 .env
 .env.*.local

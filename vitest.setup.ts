@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeAll, afterAll } from 'vitest';
-import { server } from './libs/mocks/src/server';
+import { server } from '@mocks/server';
 
 // runs a cleanup after each test case (e.g. clearing jsdom)
 afterEach(() => {

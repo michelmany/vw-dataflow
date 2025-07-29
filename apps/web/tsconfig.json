@@ -7,14 +7,24 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@libs/*": ["../../libs/*/src"],
-      "@test-utils/*": ["../../libs/test-utils/src/*"],
-      "@mocks/*": ["../../libs/mocks/src/*"]
+      "@libs/ui": ["../../libs/ui/src"],
+      "@libs/hooks": ["../../libs/hooks/src"],
+      "@libs/utils": ["../../libs/utils/src"],
+      "@libs/services": ["../../libs/services/src"],
+      "@libs/types": ["../../libs/types/src"],
+      "@test-utils": ["../../libs/test-utils/src"],
+      "@mocks": ["../../libs/mocks/src"]
     }
   },
   "include": ["src"],
   "exclude": ["src/**/*.test.*", "src/**/*.spec.*", "src/**/__tests__/**/*"],
   "references": [
+    {
+      "path": "../../libs/types"
+    },
+    {
+      "path": "../../libs/utils"
+    },
     {
       "path": "../../libs/ui"
     },
@@ -22,19 +32,7 @@
       "path": "../../libs/hooks"
     },
     {
-      "path": "../../libs/utils"
-    },
-    {
       "path": "../../libs/services"
-    },
-    {
-      "path": "../../libs/types"
-    },
-    {
-      "path": "../../libs/test-utils"
-    },
-    {
-      "path": "../../libs/mocks"
     }
   ]
 }

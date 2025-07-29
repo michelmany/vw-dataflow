@@ -21,8 +21,10 @@ jobs:
           node-version: '18'
           cache: 'npm'
           
-      - name: Install dependencies
-        run: npm ci
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
         
       - name: Run ESLint
         run: npm run lint
@@ -41,11 +43,20 @@ jobs:
           node-version: '18'
           cache: 'npm'
           
-      - name: Install dependencies
-        run: npm ci
-        
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+          
       - name: Run tests
+        run: npm run test:run
+        env:
+          CI: true
+        
+      - name: Generate coverage report
         run: npm run test:coverage
+        env:
+          CI: true
         
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
@@ -69,8 +80,10 @@ jobs:
           node-version: '18'
           cache: 'npm'
           
-      - name: Install dependencies
-        run: npm ci
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
         
       - name: Build application
         run: npm run build
